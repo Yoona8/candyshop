@@ -185,19 +185,19 @@ var getGoodsElement = function (good) {
 
   switch (good.rating.value) {
     case 1:
-      goodRatingModificator = '--one';
+      goodRatingModificator = 'one';
       break;
     case 2:
-      goodRatingModificator = '--two';
+      goodRatingModificator = 'two';
       break;
     case 3:
-      goodRatingModificator = '--three';
+      goodRatingModificator = 'three';
       break;
     case 4:
-      goodRatingModificator = '--four';
+      goodRatingModificator = 'four';
       break;
     case 5:
-      goodRatingModificator = '--five';
+      goodRatingModificator = 'five';
       break;
     default:
       break;
@@ -207,7 +207,7 @@ var getGoodsElement = function (good) {
     goodSugarMessage = 'Содержит сахар';
   }
 
-  goodRatingElement.classList.add(goodRatingClass + goodRatingModificator);
+  goodRatingElement.classList.add(goodRatingClass + '--' + goodRatingModificator);
   goodRatingElement.textContent = 'Рейтинг: ' + good.rating.value + ' звёзд';
   goodElement.classList.add(goodElementAdditionalClass);
   goodWeightElement.textContent = '/ ' + good.weight + ' Г';
