@@ -248,5 +248,14 @@ var renderCart = function () {
   renderBlockOfElements(goodsInCart, cart, getCartElement);
 };
 
+var onCatalogClick = function (e) {
+  if (e.target.classList.contains('card__btn-favorite')) {
+    e.preventDefault();
+    e.target.classList.toggle('card__btn-favorite--selected');
+  }
+};
+
 renderGoods();
 renderCart();
+
+catalog.addEventListener('click', onCatalogClick);
