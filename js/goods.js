@@ -6,6 +6,7 @@ var goodTemplate = document.querySelector('#card').content.querySelector('.catal
 var cartGoodTemplate = document.querySelector('#card-order').content.querySelector('.goods_card');
 var cart = document.querySelector('.goods__cards');
 var cartEmptyElement = cart.querySelector('.goods__card-empty');
+var cartEmptyElementCopy = cartEmptyElement.cloneNode(true);
 
 var getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -246,9 +247,21 @@ var renderGoods = function () {
 };
 
 var renderCart = function () {
-  cart.classList.remove('goods__cards--empty');
-  cartEmptyElement.classList.add('visually-hidden');
+  var goodsInCartLink = document.querySelector('.main-header__basket');
+  var goodsInCartCount = goodsInCart.length;
+
   renderBlockOfElements(goodsInCart, cart, getCartElement);
+
+  if (goodsInCartCount === 0) {
+    cart.classList.add('goods__cards--empty');
+    cart.appendChild(cartEmptyElementCopy);
+    cartEmptyElement.classList.remove('visually-hidden');
+    goodsInCartLink.textContent = 'В корзине ничего нет';
+  } else {
+    cart.classList.remove('goods__cards--empty');
+    cartEmptyElement.classList.add('visually-hidden');
+    document.querySelector('.main-header__basket').textContent = 'Товаров в корзине: ' + goodsInCartCount;
+  }
 };
 
 var addGoodToCart = function (element, goods) {
