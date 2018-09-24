@@ -7,6 +7,15 @@ var cartGoodTemplate = document.querySelector('#card-order').content.querySelect
 var cart = document.querySelector('.goods__cards');
 var cartEmptyElement = cart.querySelector('.goods__card-empty');
 var cartEmptyElementCopy = cartEmptyElement.cloneNode(true);
+var deliver = document.querySelector('.deliver');
+var courier = deliver.querySelector('.deliver__courier');
+var store = deliver.querySelector('.deliver__store');
+
+var initDeliveryOptions = function (current) {
+  courier.classList.add('visually-hidden');
+  store.classList.add('visually-hidden');
+  deliver.querySelector('.' + current).classList.remove('visually-hidden');
+};
 
 var getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -337,6 +346,26 @@ if (goodsInCart.length !== 0) {
   renderCart();
 }
 
+var currentOption = deliver.querySelector('.toggle-btn__input:checked').id;
+
+initDeliveryOptions(currentOption);
+
+var renderCheckedDeliveryOption = function (option) {
+  if (currentOption) {
+    deliver.querySelector('.' + currentOption).classList.add('visually-hidden');
+  }
+
+  deliver.querySelector('.' + option).classList.remove('visually-hidden');
+
+  currentOption = option;
+};
+
+var onDeliverToggleClick = function (e) {
+  var checkedElementId = e.target.id;
+  renderCheckedDeliveryOption(checkedElementId);
+};
+
 catalog.addEventListener('click', onAddToFavoriteClick);
 catalog.addEventListener('click', onAddToCartClick);
 cart.addEventListener('click', onRemoveFromCartClick);
+deliver.addEventListener('change', onDeliverToggleClick);
