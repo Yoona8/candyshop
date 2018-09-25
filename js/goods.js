@@ -10,6 +10,37 @@ var cartEmptyElementCopy = cartEmptyElement.cloneNode(true);
 var deliver = document.querySelector('.deliver');
 var courier = deliver.querySelector('.deliver__courier');
 var store = deliver.querySelector('.deliver__store');
+var rangeSlider = document.querySelector('.range');
+var rangeBar = rangeSlider.querySelector('.range__filter');
+var rangeMinOutput = rangeSlider.querySelector('.range__price--min');
+var rangeMaxOutput = rangeSlider.querySelector('.range__price--max');
+var rangeBarWidth = rangeBar.offsetWidth;
+
+var getRangeMovePercentage = function (element) {
+  var rangeCurrentY = element.offsetLeft;
+  return Math.round((rangeCurrentY / rangeBarWidth) * 100);
+};
+
+var renderRangePrice = function (element) {
+  var moveX = getRangeMovePercentage(element);
+  var output = rangeMaxOutput;
+
+  if (element.classList.contains('range__btn--left')) {
+    output = rangeMinOutput;
+  }
+
+  element.style.left = moveX + '%';
+  output.textContent = moveX;
+};
+
+
+var onRangeButtonMouseup = function (e) {
+  if (e.target.classList.contains('range__btn')) {
+    renderRangePrice(e.target, e.clientX);
+  }
+};
+
+rangeBar.addEventListener('mouseup', onRangeButtonMouseup);
 
 var initDeliveryOptions = function (current) {
   courier.classList.add('visually-hidden');
