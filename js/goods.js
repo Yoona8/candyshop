@@ -309,11 +309,23 @@ var renderCart = function () {
   }
 };
 
-var addGoodToCart = function (element, goods) {
-  var goodName = element.querySelector('.card__title').textContent;
-  var goodInStore = goods.find(function (item) {
+var getGoodNameFromCatalog = function (element) {
+  return element.querySelector('.card__title').textContent;
+};
+
+var getGoodNameFromCart = function (element) {
+  return element.querySelector('.card-order__title').textContent;
+};
+
+var getGoodFromArray = function (arrayOfGoods, goodName) {
+  return arrayOfGoods.find(function (item) {
     return item.name === goodName;
   });
+};
+
+var addGoodToCart = function (element, goodsInStore) {
+  var goodName = getGoodNameFromCatalog(element);
+  var goodInStore = getGoodFromArray(goodsInStore, goodName);
 
   if (goodInStore.amount <= 0) {
     return;
@@ -321,9 +333,7 @@ var addGoodToCart = function (element, goods) {
 
   goodInStore.amount--;
 
-  var goodFromCart = goodsInCart.find(function (item) {
-    return item.name === goodInStore.name;
-  });
+  var goodFromCart = getGoodFromArray(goodsInCart, goodInStore.name);
 
   if (goodFromCart) {
     goodFromCart.orderedAmount++;
@@ -336,18 +346,14 @@ var addGoodToCart = function (element, goods) {
   }
 };
 
-var removeGoodFromCart = function (element, goods) {
-  var goodName = element.querySelector('.card-order__title').textContent;
-  var goodInCart = goodsInCart.find(function (item) {
-    return item.name === goodName;
-  });
+var removeGoodFromCart = function (element, goodsInStore) {
+  var goodName = getGoodNameFromCart(element);
+  var goodInCart = getGoodFromArray(goodsInCart, goodName);
   var goodInCartIndex = goodsInCart.indexOf(goodInCart);
 
   goodsInCart.splice(goodInCartIndex, 1);
 
-  var goodInStore = goods.find(function (item) {
-    return item.name === goodName;
-  });
+  var goodInStore = getGoodFromArray(goodsInStore, goodName);
 
   goodInStore.amount += goodInCart.orderedAmount;
 };
@@ -373,6 +379,7 @@ var onRemoveFromCartClick = function (e) {
     e.preventDefault();
     removeGoodFromCart(e.target.closest('.card-order'), randomGoods);
     renderCart();
+    renderGoods();
   }
 };
 
@@ -401,7 +408,52 @@ var onDeliverToggleClick = function (e) {
   renderCheckedDeliveryOption(checkedElementId);
 };
 
+var decreaseCartGoodAmount = function (element) {
+  var goodName = getGoodNameFromCart(element);
+  var goodInCart = getGoodFromArray(goodsInCart, goodName);
+  var goodInStore = getGoodFromArray(randomGoods, goodName);
+
+  if (goodInCart.orderedAmount <= 1) {
+    removeGoodFromCart(element, randomGoods);
+    return;
+  }
+
+  goodInCart.orderedAmount--;
+  goodInStore.amount++;
+};
+
+var increaseCartGoodAmount = function (element) {
+  var goodName = getGoodNameFromCart(element);
+  var goodInCart = getGoodFromArray(goodsInCart, goodName);
+  var goodInStore = getGoodFromArray(randomGoods, goodName);
+
+  if (goodInStore.amount === 0) {
+    return;
+  }
+
+  goodInCart.orderedAmount++;
+  goodInStore.amount--;
+};
+
+var onDecreaseAmountClick = function (e) {
+  if (e.target.classList.contains('card-order__btn--decrease')) {
+    decreaseCartGoodAmount(e.target.closest('.card-order'));
+    renderCart();
+    renderGoods();
+  }
+};
+
+var onIncreaseAmountClick = function (e) {
+  if (e.target.classList.contains('card-order__btn--increase')) {
+    increaseCartGoodAmount(e.target.closest('.card-order'));
+    renderCart();
+    renderGoods();
+  }
+};
+
 catalog.addEventListener('click', onAddToFavoriteClick);
 catalog.addEventListener('click', onAddToCartClick);
 cart.addEventListener('click', onRemoveFromCartClick);
+cart.addEventListener('click', onDecreaseAmountClick);
+cart.addEventListener('click', onIncreaseAmountClick);
 deliver.addEventListener('change', onDeliverToggleClick);
