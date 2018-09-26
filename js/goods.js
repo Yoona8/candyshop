@@ -15,6 +15,9 @@ var rangeBar = rangeSlider.querySelector('.range__filter');
 var rangeMinOutput = rangeSlider.querySelector('.range__price--min');
 var rangeMaxOutput = rangeSlider.querySelector('.range__price--max');
 var rangeBarWidth = rangeBar.offsetWidth;
+var payment = document.querySelector('.payment');
+var card = payment.querySelector('.payment__card-wrap');
+var cash = payment.querySelector('.payment__cash-wrap');
 
 var getRangeMovePercentage = function (element) {
   var rangeCurrentY = element.offsetLeft;
@@ -33,7 +36,6 @@ var renderRangePrice = function (element) {
   output.textContent = moveX;
 };
 
-
 var onRangeButtonMouseup = function (e) {
   if (e.target.classList.contains('range__btn')) {
     renderRangePrice(e.target, e.clientX);
@@ -46,6 +48,12 @@ var initDeliveryOptions = function (current) {
   courier.classList.add('visually-hidden');
   store.classList.add('visually-hidden');
   deliver.querySelector('.' + current).classList.remove('visually-hidden');
+};
+
+var initPaymentOptions = function (current) {
+  card.classList.add('visually-hidden');
+  cash.classList.add('visually-hidden');
+  payment.querySelector('.' + current + '-wrap').classList.remove('visually-hidden');
 };
 
 var getRandomInt = function (min, max) {
@@ -389,23 +397,42 @@ if (goodsInCart.length !== 0) {
   renderCart();
 }
 
-var currentOption = deliver.querySelector('.toggle-btn__input:checked').id;
+var currentDeliveryOption = deliver.querySelector('.toggle-btn__input:checked').id;
 
-initDeliveryOptions(currentOption);
+initDeliveryOptions(currentDeliveryOption);
 
 var renderCheckedDeliveryOption = function (option) {
-  if (currentOption) {
-    deliver.querySelector('.' + currentOption).classList.add('visually-hidden');
+  if (currentDeliveryOption) {
+    deliver.querySelector('.' + currentDeliveryOption).classList.add('visually-hidden');
   }
 
   deliver.querySelector('.' + option).classList.remove('visually-hidden');
 
-  currentOption = option;
+  currentDeliveryOption = option;
 };
 
 var onDeliverToggleClick = function (e) {
   var checkedElementId = e.target.id;
   renderCheckedDeliveryOption(checkedElementId);
+};
+
+var currentPaymentOption = payment.querySelector('.toggle-btn__input:checked').id;
+
+initPaymentOptions(currentPaymentOption);
+
+var renderCheckedPaymentOption = function (option) {
+  if (currentPaymentOption) {
+    payment.querySelector('.' + currentPaymentOption + '-wrap').classList.add('visually-hidden');
+  }
+
+  payment.querySelector('.' + option + '-wrap').classList.remove('visually-hidden');
+
+  currentPaymentOption = option;
+};
+
+var onPaymentToggleClick = function (e) {
+  var checkedElementId = e.target.id;
+  renderCheckedPaymentOption(checkedElementId);
 };
 
 var decreaseCartGoodAmount = function (element) {
@@ -457,3 +484,4 @@ cart.addEventListener('click', onRemoveFromCartClick);
 cart.addEventListener('click', onDecreaseAmountClick);
 cart.addEventListener('click', onIncreaseAmountClick);
 deliver.addEventListener('change', onDeliverToggleClick);
+payment.addEventListener('change', onPaymentToggleClick);
