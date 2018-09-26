@@ -412,8 +412,9 @@ var renderCheckedDeliveryOption = function (option) {
 };
 
 var onDeliverToggleClick = function (e) {
-  var checkedElementId = e.target.id;
-  renderCheckedDeliveryOption(checkedElementId);
+  if (e.target.classList.contains('toggle-btn__input')) {
+    renderCheckedDeliveryOption(e.target.id);
+  }
 };
 
 var currentPaymentOption = payment.querySelector('.toggle-btn__input:checked').id;
@@ -431,8 +432,9 @@ var renderCheckedPaymentOption = function (option) {
 };
 
 var onPaymentToggleClick = function (e) {
-  var checkedElementId = e.target.id;
-  renderCheckedPaymentOption(checkedElementId);
+  if (e.target.classList.contains('toggle-btn__input')) {
+    renderCheckedPaymentOption(e.target.id);
+  }
 };
 
 var decreaseCartGoodAmount = function (element) {
