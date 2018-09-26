@@ -289,6 +289,11 @@ var renderGoods = function () {
 var renderCart = function () {
   var goodsInCartLink = document.querySelector('.main-header__basket');
   var goodsInCartCount = goodsInCart.length;
+  var totalPrice = 0;
+
+  goodsInCart.forEach(function (current) {
+    totalPrice += current.orderedAmount * current.price;
+  });
 
   renderBlockOfElements(goodsInCart, cart, getCartElement);
 
@@ -300,7 +305,7 @@ var renderCart = function () {
   } else {
     cart.classList.remove('goods__cards--empty');
     cartEmptyElement.classList.add('visually-hidden');
-    document.querySelector('.main-header__basket').textContent = 'Товаров в корзине: ' + goodsInCartCount;
+    document.querySelector('.main-header__basket').textContent = 'В корзине ' + goodsInCartCount + ' товара на ' + totalPrice + '₽';
   }
 };
 
