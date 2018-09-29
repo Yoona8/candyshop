@@ -146,6 +146,14 @@ var IMAGES = [
   'soda-russian.jpg'
 ];
 
+var MODIFIERS = [
+  'one',
+  'two',
+  'three',
+  'four',
+  'five'
+];
+
 var NUMBER_OF_GOODS = 26;
 
 var catalog = document.querySelector('.catalog__cards');
@@ -164,40 +172,12 @@ var getBasedOnAmountClass = function (amount) {
   return amountClass;
 };
 
-var getRatingModificator = function (rating) {
-  var modificator = '';
-
-  switch (rating) {
-    case 1:
-      modificator = 'one';
-      break;
-    case 2:
-      modificator = 'two';
-      break;
-    case 3:
-      modificator = 'three';
-      break;
-    case 4:
-      modificator = 'four';
-      break;
-    case 5:
-      modificator = 'five';
-      break;
-    default:
-      break;
-  }
-
-  return modificator;
+var getRatingModifier = function (rating) {
+  return MODIFIERS[rating - 1];
 };
 
 var getNutritionSugarMessage = function (isSugar) {
-  var message = 'Без сахара';
-
-  if (isSugar) {
-    message = 'Содержит сахар';
-  }
-
-  return message;
+  return isSugar ? 'Содержит сахар' : 'Без сахара';
 };
 
 var getGoodsElement = function (good) {
@@ -212,7 +192,7 @@ var getGoodsElement = function (good) {
   var goodRatingClass = 'stars__rating';
   goodRatingElement.classList = '';
   goodRatingElement.classList.add(goodRatingClass);
-  goodRatingElement.classList.add(goodRatingClass + '--' + getRatingModificator(good.rating.value));
+  goodRatingElement.classList.add(goodRatingClass + '--' + getRatingModifier(good.rating.value));
   goodRatingElement.textContent = 'Рейтинг: ' + good.rating.value + ' звёзд';
 
   var goodPriceElement = goodElement.querySelector('.card__price');
@@ -279,6 +259,7 @@ var randomGoods = getGoods();
 var renderGoods = function () {
   catalog.classList.remove('catalog__cards--load');
   catalogLoad.classList.add('visually-hidden');
+
   renderBlockOfElements(randomGoods, catalog, getGoodsElement);
 };
 
@@ -346,8 +327,21 @@ var getCartElement = function (good) {
 };
 
 var renderCart = function () {
-  var goodsInCartLink = document.querySelector('.main-header__basket');
   var goodsInCartCount = goodsInCart.length;
+  var goodsInCartLink = document.querySelector('.main-header__basket');
+
+  if (goodsInCartCount === 0) {
+    cart.textContent = '';
+    cart.classList.add('goods__cards--empty');
+    cart.appendChild(cartEmptyElementCopy);
+
+    cartEmptyElement.classList.remove('visually-hidden');
+
+    goodsInCartLink.textContent = 'В корзине ничего нет';
+
+    return;
+  }
+
   var totalPrice = 0;
 
   goodsInCart.forEach(function (current) {
@@ -356,16 +350,11 @@ var renderCart = function () {
 
   renderBlockOfElements(goodsInCart, cart, getCartElement);
 
-  if (goodsInCartCount === 0) {
-    cart.classList.add('goods__cards--empty');
-    cart.appendChild(cartEmptyElementCopy);
-    cartEmptyElement.classList.remove('visually-hidden');
-    goodsInCartLink.textContent = 'В корзине ничего нет';
-  } else {
-    cart.classList.remove('goods__cards--empty');
-    cartEmptyElement.classList.add('visually-hidden');
-    document.querySelector('.main-header__basket').textContent = 'В корзине ' + goodsInCartCount + ' товара на ' + totalPrice + '₽';
-  }
+  cart.classList.remove('goods__cards--empty');
+
+  cartEmptyElement.classList.add('visually-hidden');
+
+  goodsInCartLink.textContent = 'В корзине ' + goodsInCartCount + ' товара на ' + totalPrice + '₽';
 };
 
 var onAddToCartClick = function (e) {
