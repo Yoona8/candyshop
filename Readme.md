@@ -1,7 +1,7 @@
 # Личный проект «Кэндишоп» [![Build status][travis-image]][travis-url]
 
 * Студент: [Елена Валеева](https://up.htmlacademy.ru/javascript/15/user/232403).
-* Наставник: [Евгений Лепёшкин](https://htmlacademy.ru/profile/id144641).
+* Наставник: [Всеволод Артемьев](https://htmlacademy.ru/profile/id459331).
 
 ---
 
