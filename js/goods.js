@@ -30,6 +30,14 @@ var renderBlockOfElements = function (elements, container, callback) {
   container.appendChild(fragment);
 };
 
+var toggleFields = function (container, isEnabled) {
+  var fields = container.querySelectorAll('input');
+
+  for (var i = 0; i < fields.length; i++) {
+    fields[i].disabled = !isEnabled;
+  }
+};
+
 // --------------- slider ---------------
 var rangeSlider = document.querySelector('.range');
 var rangeBar = rangeSlider.querySelector('.range__filter');
@@ -447,6 +455,41 @@ var onIncreaseAmountClick = function (e) {
 cart.addEventListener('click', onIncreaseAmountClick);
 
 // --------------- order ---------------
+var orderForm = document.querySelector('.buy form');
+
+var validateRequired = function (field, fieldName) {
+  if (field.validity.valueMissing) {
+    field.setCustomValidity('Заполните ' + fieldName);
+  } else {
+    field.setCustomValidity('');
+  }
+};
+
+var onNameFieldInvalid = function (e) {
+  validateRequired(e.target, 'имя');
+};
+
+var nameField = orderForm.querySelector('#contact-data__name');
+nameField.addEventListener('invalid', onNameFieldInvalid);
+
+var onPhoneFieldInvalid = function (e) {
+  validateRequired(e.target, 'номер телефона');
+};
+
+var phoneField = orderForm.querySelector('#contact-data__tel');
+phoneField.addEventListener('invalid', onPhoneFieldInvalid);
+
+var onEmailFieldInvalid = function (e) {
+  var field = e.target;
+  if (field.validity.typeMismatch) {
+    field.setCustomValidity('Введите правильный e-mail');
+  } else {
+    field.setCustomValidity('');
+  }
+};
+
+var emailField = orderForm.querySelector('#contact-data__email');
+emailField.addEventListener('invalid', onEmailFieldInvalid);
 
 // --------------- payment ---------------
 var payment = document.querySelector('.payment');
@@ -458,6 +501,8 @@ var initPaymentOptions = function (current) {
   card.classList.add('visually-hidden');
   cash.classList.add('visually-hidden');
   payment.querySelector('.' + current + '-wrap').classList.remove('visually-hidden');
+
+  toggleFields(card, currentPaymentOption === 'payment__card');
 };
 
 initPaymentOptions(currentPaymentOption);
@@ -476,6 +521,8 @@ var onPaymentToggleClick = function (e) {
   if (e.target.classList.contains('toggle-btn__input')) {
     renderCheckedPaymentOption(e.target.id);
   }
+
+  toggleFields(card, e.target.id === 'payment__card');
 };
 
 payment.addEventListener('change', onPaymentToggleClick);
@@ -486,10 +533,22 @@ var courier = deliver.querySelector('.deliver__courier');
 var store = deliver.querySelector('.deliver__store');
 var currentDeliveryOption = deliver.querySelector('.toggle-btn__input:checked').id;
 
+var setDeliveryFields = function (current) {
+  if (current === 'deliver__courier') {
+    toggleFields(courier, true);
+    toggleFields(store, false);
+  } else {
+    toggleFields(courier, false);
+    toggleFields(store, true);
+  }
+};
+
 var initDeliveryOptions = function (current) {
   courier.classList.add('visually-hidden');
   store.classList.add('visually-hidden');
   deliver.querySelector('.' + current).classList.remove('visually-hidden');
+
+  setDeliveryFields(current);
 };
 
 initDeliveryOptions(currentDeliveryOption);
@@ -500,6 +559,8 @@ var renderCheckedDeliveryOption = function (option) {
   }
 
   deliver.querySelector('.' + option).classList.remove('visually-hidden');
+
+  setDeliveryFields(option);
 
   currentDeliveryOption = option;
 };
