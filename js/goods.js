@@ -474,28 +474,6 @@ cart.addEventListener('click', onIncreaseAmountClick);
 // --------------- order ---------------
 var orderForm = document.querySelector('.buy form');
 
-var validateRequired = function (field, fieldName) {
-  if (field.validity.valueMissing) {
-    field.setCustomValidity('Заполните ' + fieldName);
-  } else {
-    field.setCustomValidity('');
-  }
-};
-
-var onNameFieldInvalid = function (e) {
-  validateRequired(e.target, 'имя');
-};
-
-var nameField = orderForm.querySelector('#contact-data__name');
-nameField.addEventListener('invalid', onNameFieldInvalid);
-
-var onPhoneFieldInvalid = function (e) {
-  validateRequired(e.target, 'номер телефона');
-};
-
-var phoneField = orderForm.querySelector('#contact-data__tel');
-phoneField.addEventListener('invalid', onPhoneFieldInvalid);
-
 var onEmailFieldInvalid = function (e) {
   var field = e.target;
   if (field.validity.typeMismatch) {
@@ -564,13 +542,8 @@ var store = deliver.querySelector('.deliver__store');
 var currentDeliveryOption = deliver.querySelector('.toggle-btn__input:checked').id;
 
 var setDeliveryFields = function (current) {
-  if (current === 'deliver__courier') {
-    toggleFields(courier, true);
-    toggleFields(store, false);
-  } else {
-    toggleFields(courier, false);
-    toggleFields(store, true);
-  }
+  toggleFields(courier, current === 'deliver__courier');
+  toggleFields(store, current !== 'deliver__courier');
 };
 
 var initDeliveryOptions = function (current) {
