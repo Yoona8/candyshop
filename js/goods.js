@@ -30,9 +30,7 @@ var renderBlockOfElements = function (elements, container, callback) {
   container.appendChild(fragment);
 };
 
-var toggleFields = function (container, isEnabled) {
-  var fields = container.querySelectorAll('input');
-
+var toggleFields = function (fields, isEnabled) {
   for (var i = 0; i < fields.length; i++) {
     fields[i].disabled = !isEnabled;
   }
@@ -41,16 +39,13 @@ var toggleFields = function (container, isEnabled) {
 var checkCardValidity = function (cardNumber) {
   var numbers = cardNumber.split('');
 
-  var evenNumbers = numbers.map(function (item) {
-    return (item % 2) ? item * 2 : item;
-  });
-
-  var sum = 0;
-
-  evenNumbers.forEach(function (item) {
-    var number = (item >= 10) ? item - 9 : +item;
-    sum += number;
-  });
+  var sum = numbers
+    .map(function (item) {
+      return (item % 2) ? item * 2 : item;
+    })
+    .reduce(function (acc, number) {
+      return acc + (number >= 10 ? number - 9 : +number);
+    }, 0);
 
   return sum % 10 === 0;
 };
@@ -489,6 +484,7 @@ emailField.addEventListener('invalid', onEmailFieldInvalid);
 // --------------- payment ---------------
 var payment = document.querySelector('.payment');
 var card = payment.querySelector('.payment__card-wrap');
+var cardInputs = card.querySelectorAll('input');
 var cash = payment.querySelector('.payment__cash-wrap');
 var currentPaymentOption = payment.querySelector('.toggle-btn__input:checked').id;
 
@@ -497,7 +493,7 @@ var initPaymentOptions = function (current) {
   cash.classList.add('visually-hidden');
   payment.querySelector('.' + current + '-wrap').classList.remove('visually-hidden');
 
-  toggleFields(card, currentPaymentOption === 'payment__card');
+  toggleFields(cardInputs, currentPaymentOption === 'payment__card');
 };
 
 initPaymentOptions(currentPaymentOption);
@@ -509,7 +505,7 @@ var renderCheckedPaymentOption = function (option) {
 
   payment.querySelector('.' + option + '-wrap').classList.remove('visually-hidden');
 
-  toggleFields(card, option === 'payment__card');
+  toggleFields(cardInputs, option === 'payment__card');
 
   currentPaymentOption = option;
 };
@@ -538,12 +534,14 @@ cardField.addEventListener('input', onCardFieldInvalid);
 // --------------- delivery ---------------
 var deliver = document.querySelector('.deliver');
 var courier = deliver.querySelector('.deliver__courier');
+var courierInputs = courier.querySelectorAll('input');
 var store = deliver.querySelector('.deliver__store');
+var storeInputs = store.querySelectorAll('input');
 var currentDeliveryOption = deliver.querySelector('.toggle-btn__input:checked').id;
 
 var setDeliveryFields = function (current) {
-  toggleFields(courier, current === 'deliver__courier');
-  toggleFields(store, current !== 'deliver__courier');
+  toggleFields(courierInputs, current === 'deliver__courier');
+  toggleFields(storeInputs, current !== 'deliver__courier');
 };
 
 var initDeliveryOptions = function (current) {
