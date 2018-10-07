@@ -30,6 +30,26 @@ var renderBlockOfElements = function (elements, container, callback) {
   container.appendChild(fragment);
 };
 
+var toggleFields = function (fields, isEnabled) {
+  for (var i = 0; i < fields.length; i++) {
+    fields[i].disabled = !isEnabled;
+  }
+};
+
+var checkCardValidity = function (cardNumber) {
+  var numbers = cardNumber.split('');
+
+  var sum = numbers
+    .map(function (item) {
+      return (item % 2) ? item * 2 : item;
+    })
+    .reduce(function (acc, number) {
+      return acc + (number >= 10 ? number - 9 : +number);
+    }, 0);
+
+  return sum % 10 === 0;
+};
+
 // --------------- slider ---------------
 var rangeSlider = document.querySelector('.range');
 var rangeBar = rangeSlider.querySelector('.range__filter');
@@ -447,10 +467,24 @@ var onIncreaseAmountClick = function (e) {
 cart.addEventListener('click', onIncreaseAmountClick);
 
 // --------------- order ---------------
+var orderForm = document.querySelector('.buy form');
+
+var onEmailFieldInvalid = function (e) {
+  var field = e.target;
+  if (field.validity.typeMismatch) {
+    field.setCustomValidity('Введите правильный e-mail');
+  } else {
+    field.setCustomValidity('');
+  }
+};
+
+var emailField = orderForm.querySelector('#contact-data__email');
+emailField.addEventListener('invalid', onEmailFieldInvalid);
 
 // --------------- payment ---------------
 var payment = document.querySelector('.payment');
 var card = payment.querySelector('.payment__card-wrap');
+var cardInputs = card.querySelectorAll('input');
 var cash = payment.querySelector('.payment__cash-wrap');
 var currentPaymentOption = payment.querySelector('.toggle-btn__input:checked').id;
 
@@ -458,6 +492,8 @@ var initPaymentOptions = function (current) {
   card.classList.add('visually-hidden');
   cash.classList.add('visually-hidden');
   payment.querySelector('.' + current + '-wrap').classList.remove('visually-hidden');
+
+  toggleFields(cardInputs, currentPaymentOption === 'payment__card');
 };
 
 initPaymentOptions(currentPaymentOption);
@@ -468,6 +504,8 @@ var renderCheckedPaymentOption = function (option) {
   }
 
   payment.querySelector('.' + option + '-wrap').classList.remove('visually-hidden');
+
+  toggleFields(cardInputs, option === 'payment__card');
 
   currentPaymentOption = option;
 };
@@ -480,16 +518,38 @@ var onPaymentToggleClick = function (e) {
 
 payment.addEventListener('change', onPaymentToggleClick);
 
+var onCardFieldInvalid = function (e) {
+  var field = e.target;
+  var cardNumber = field.value;
+  var isValid = checkCardValidity(cardNumber);
+
+  if (!isValid) {
+    field.setCustomValidity('Введите корректный номер карты.');
+  }
+};
+
+var cardField = card.querySelector('#payment__card-number');
+cardField.addEventListener('input', onCardFieldInvalid);
+
 // --------------- delivery ---------------
 var deliver = document.querySelector('.deliver');
 var courier = deliver.querySelector('.deliver__courier');
+var courierInputs = courier.querySelectorAll('input');
 var store = deliver.querySelector('.deliver__store');
+var storeInputs = store.querySelectorAll('input');
 var currentDeliveryOption = deliver.querySelector('.toggle-btn__input:checked').id;
+
+var setDeliveryFields = function (current) {
+  toggleFields(courierInputs, current === 'deliver__courier');
+  toggleFields(storeInputs, current !== 'deliver__courier');
+};
 
 var initDeliveryOptions = function (current) {
   courier.classList.add('visually-hidden');
   store.classList.add('visually-hidden');
   deliver.querySelector('.' + current).classList.remove('visually-hidden');
+
+  setDeliveryFields(current);
 };
 
 initDeliveryOptions(currentDeliveryOption);
@@ -500,6 +560,8 @@ var renderCheckedDeliveryOption = function (option) {
   }
 
   deliver.querySelector('.' + option).classList.remove('visually-hidden');
+
+  setDeliveryFields(option);
 
   currentDeliveryOption = option;
 };
