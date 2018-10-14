@@ -53,34 +53,104 @@ var checkCardValidity = function (cardNumber) {
 // --------------- slider ---------------
 var rangeSlider = document.querySelector('.range');
 var rangeBar = rangeSlider.querySelector('.range__filter');
-var rangeBarWidth = rangeBar.offsetWidth;
+var rangeBarCoordinates = rangeBar.getBoundingClientRect();
 var rangeMinOutput = rangeSlider.querySelector('.range__price--min');
 var rangeMaxOutput = rangeSlider.querySelector('.range__price--max');
 
-var getRangeMovePercentage = function (element) {
-  var rangeCurrentY = element.offsetLeft;
-  return Math.round((rangeCurrentY / rangeBarWidth) * 100);
-};
+var rangeControlMin = rangeBar.querySelector('.range__btn--left');
+var rangeControlMax = rangeBar.querySelector('.range__btn--right');
+var rangeBarFilled = rangeBar.querySelector('.range__fill-line');
+var limits = rangeBarCoordinates.width;
 
-var renderRangePrice = function (element) {
-  var moveX = getRangeMovePercentage(element);
-  var output = rangeMaxOutput;
+var renderSlider = function (coordinates, control) {
+  var movePercentage = coordinates.x - rangeBarCoordinates.x;
+  var percentage = 100 * movePercentage / limits;
 
-  if (element.classList.contains('range__btn--left')) {
-    output = rangeMinOutput;
-  }
-
-  element.style.left = moveX + '%';
-  output.textContent = moveX;
-};
-
-var onRangeButtonMouseup = function (e) {
-  if (e.target.classList.contains('range__btn')) {
-    renderRangePrice(e.target, e.clientX);
+  if (control === 'min') {
+    rangeControlMin.style.left = percentage + '%';
+    rangeBarFilled.style.left = percentage + '%';
+    rangeMinOutput.textContent = Math.round(percentage);
+  } else {
+    rangeControlMax.style.right = (100 - percentage) + '%';
+    rangeBarFilled.style.right = (100 - percentage) + '%';
+    rangeMaxOutput.textContent = Math.round(percentage);
   }
 };
 
-rangeBar.addEventListener('mouseup', onRangeButtonMouseup);
+var onRangeControlMinMousedown = function (e) {
+  var startCoordinates = {
+    x: e.clientX,
+    y: e.clientY
+  };
+
+  var onMousemove = function (eMove) {
+    var moveCoordinates = {
+      x: eMove.clientX,
+      y: eMove.clientY
+    };
+
+    if (moveCoordinates.x <= rangeBarCoordinates.x || moveCoordinates.x >= rangeControlMax.getBoundingClientRect().x) {
+      return;
+    }
+
+    renderSlider(moveCoordinates, 'min');
+
+    startCoordinates.x = eMove.clientX;
+    startCoordinates.y = eMove.clientY;
+  };
+
+  var onMouseup = function (eUp) {
+    startCoordinates = {
+      x: eUp.clientX,
+      y: eUp.clientY
+    };
+
+    document.removeEventListener('mousemove', onMousemove);
+    document.removeEventListener('mouseup', onMouseup);
+  };
+
+  document.addEventListener('mousemove', onMousemove);
+  document.addEventListener('mouseup', onMouseup);
+};
+
+var onRangeControlMaxMousedown = function (e) {
+  var startCoordinates = {
+    x: e.clientX,
+    y: e.clientY
+  };
+
+  var onMousemove = function (eMove) {
+    var moveCoordinates = {
+      x: eMove.clientX,
+      y: eMove.clientY
+    };
+
+    if (moveCoordinates.x >= rangeBarCoordinates.right || moveCoordinates.x <= rangeControlMin.getBoundingClientRect().right) {
+      return;
+    }
+
+    renderSlider(moveCoordinates, 'max');
+
+    startCoordinates.x = eMove.clientX;
+    startCoordinates.y = eMove.clientY;
+  };
+
+  var onMouseup = function (eUp) {
+    startCoordinates = {
+      x: eUp.clientX,
+      y: eUp.clientY
+    };
+
+    document.removeEventListener('mousemove', onMousemove);
+    document.removeEventListener('mouseup', onMouseup);
+  };
+
+  document.addEventListener('mousemove', onMousemove);
+  document.addEventListener('mouseup', onMouseup);
+};
+
+rangeControlMin.addEventListener('mousedown', onRangeControlMinMousedown);
+rangeControlMax.addEventListener('mousedown', onRangeControlMaxMousedown);
 
 // --------------- catalog ---------------
 var NAMES = [
