@@ -62,6 +62,17 @@ var rangeControlMax = rangeBar.querySelector('.range__btn--right');
 var rangeBarFilled = rangeBar.querySelector('.range__fill-line');
 var rangeControlWidth = rangeControlMax.offsetWidth;
 var limits = rangeBarCoordinates.width;
+var rangeControlMaxCoordinates = rangeControlMax.getBoundingClientRect();
+var rangeControlMinCoordinates = rangeControlMin.getBoundingClientRect();
+var rangeControlMaxStartCoordinates = {
+  x: rangeControlMaxCoordinates.x,
+  y: rangeControlMaxCoordinates.y
+};
+
+var rangeControlMinStartCoordinates = {
+  x: rangeControlMinCoordinates.x,
+  y: rangeControlMinCoordinates.y
+};
 
 var renderSlider = function (coordinates, control) {
   var moveX = coordinates.x - rangeBarCoordinates.x;
@@ -70,14 +81,17 @@ var renderSlider = function (coordinates, control) {
 
   if (control === 'min') {
     rangeControlMin.style.left = (controlPosition) + 'px';
-    rangeBarFilled.style.left = moveX + 'px';
+    rangeBarFilled.style.left = (moveX + rangeControlWidth - 2) + 'px';
     rangeMinOutput.textContent = Math.round(percentage);
   } else {
     rangeControlMax.style.left = (controlPosition) + 'px';
-    rangeBarFilled.style.right = (limits - moveX) + 'px';
+    rangeBarFilled.style.right = (limits - moveX - 2) + 'px';
     rangeMaxOutput.textContent = Math.round(percentage);
   }
 };
+
+renderSlider(rangeControlMaxStartCoordinates, 'max');
+renderSlider(rangeControlMinStartCoordinates, 'min');
 
 var onRangeControlMousedown = function (e) {
   var control = e.target.classList.contains('range__btn--left') ? 'min' : 'max';
