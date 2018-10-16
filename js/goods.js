@@ -60,24 +60,30 @@ var rangeMaxOutput = rangeSlider.querySelector('.range__price--max');
 var rangeControlMin = rangeBar.querySelector('.range__btn--left');
 var rangeControlMax = rangeBar.querySelector('.range__btn--right');
 var rangeBarFilled = rangeBar.querySelector('.range__fill-line');
+var rangeControlWidth = rangeControlMax.offsetWidth;
 var limits = rangeBarCoordinates.width;
 
 var renderSlider = function (coordinates, control) {
-  var movePercentage = coordinates.x - rangeBarCoordinates.x;
-  var percentage = 100 * movePercentage / limits;
+  var moveX = coordinates.x - rangeBarCoordinates.x;
+  var percentage = 100 * moveX / limits;
+  var controlPosition = (moveX >= limits - rangeControlWidth) ? limits - rangeControlWidth : moveX;
 
   if (control === 'min') {
-    rangeControlMin.style.left = percentage + '%';
-    rangeBarFilled.style.left = percentage + '%';
+    rangeControlMin.style.left = (controlPosition) + 'px';
+    rangeBarFilled.style.left = moveX + 'px';
     rangeMinOutput.textContent = Math.round(percentage);
   } else {
-    rangeControlMax.style.right = (100 - percentage) + '%';
-    rangeBarFilled.style.right = (100 - percentage) + '%';
+    rangeControlMax.style.left = (controlPosition) + 'px';
+    rangeBarFilled.style.right = (limits - moveX) + 'px';
     rangeMaxOutput.textContent = Math.round(percentage);
   }
 };
 
-var onRangeControlMinMousedown = function (e) {
+var onRangeControlMousedown = function (e) {
+  var control = e.target.classList.contains('range__btn--left') ? 'min' : 'max';
+  var maxCoordinate = rangeControlMax.getBoundingClientRect().x;
+  var minCoordinate = rangeControlMin.getBoundingClientRect().x;
+
   var startCoordinates = {
     x: e.clientX,
     y: e.clientY
@@ -89,11 +95,15 @@ var onRangeControlMinMousedown = function (e) {
       y: eMove.clientY
     };
 
-    if (moveCoordinates.x <= rangeBarCoordinates.x || moveCoordinates.x >= rangeControlMax.getBoundingClientRect().x) {
+    var isValidRange = (control === 'min') ?
+      (moveCoordinates.x >= rangeBarCoordinates.x && moveCoordinates.x <= maxCoordinate) :
+      (moveCoordinates.x <= rangeBarCoordinates.right && moveCoordinates.x >= minCoordinate);
+
+    if (!isValidRange) {
       return;
     }
 
-    renderSlider(moveCoordinates, 'min');
+    renderSlider(moveCoordinates, control);
 
     startCoordinates.x = eMove.clientX;
     startCoordinates.y = eMove.clientY;
@@ -113,44 +123,8 @@ var onRangeControlMinMousedown = function (e) {
   document.addEventListener('mouseup', onMouseup);
 };
 
-var onRangeControlMaxMousedown = function (e) {
-  var startCoordinates = {
-    x: e.clientX,
-    y: e.clientY
-  };
-
-  var onMousemove = function (eMove) {
-    var moveCoordinates = {
-      x: eMove.clientX,
-      y: eMove.clientY
-    };
-
-    if (moveCoordinates.x >= rangeBarCoordinates.right || moveCoordinates.x <= rangeControlMin.getBoundingClientRect().right) {
-      return;
-    }
-
-    renderSlider(moveCoordinates, 'max');
-
-    startCoordinates.x = eMove.clientX;
-    startCoordinates.y = eMove.clientY;
-  };
-
-  var onMouseup = function (eUp) {
-    startCoordinates = {
-      x: eUp.clientX,
-      y: eUp.clientY
-    };
-
-    document.removeEventListener('mousemove', onMousemove);
-    document.removeEventListener('mouseup', onMouseup);
-  };
-
-  document.addEventListener('mousemove', onMousemove);
-  document.addEventListener('mouseup', onMouseup);
-};
-
-rangeControlMin.addEventListener('mousedown', onRangeControlMinMousedown);
-rangeControlMax.addEventListener('mousedown', onRangeControlMaxMousedown);
+rangeControlMin.addEventListener('mousedown', onRangeControlMousedown);
+rangeControlMax.addEventListener('mousedown', onRangeControlMousedown);
 
 // --------------- catalog ---------------
 var NAMES = [
