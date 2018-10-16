@@ -56,79 +56,54 @@ var rangeBar = rangeSlider.querySelector('.range__filter');
 var rangeBarCoordinates = rangeBar.getBoundingClientRect();
 var rangeMinOutput = rangeSlider.querySelector('.range__price--min');
 var rangeMaxOutput = rangeSlider.querySelector('.range__price--max');
-
-var rangeControlMin = rangeBar.querySelector('.range__btn--left');
-var rangeControlMax = rangeBar.querySelector('.range__btn--right');
+var rangeMinControl = rangeBar.querySelector('.range__btn--left');
+var rangeMaxControl = rangeBar.querySelector('.range__btn--right');
 var rangeBarFilled = rangeBar.querySelector('.range__fill-line');
-var rangeControlWidth = rangeControlMax.offsetWidth;
+var rangeControlWidth = rangeMaxControl.offsetWidth;
 var limits = rangeBarCoordinates.width;
-var rangeControlMaxCoordinates = rangeControlMax.getBoundingClientRect();
-var rangeControlMinCoordinates = rangeControlMin.getBoundingClientRect();
-var rangeControlMaxStartCoordinates = {
-  x: rangeControlMaxCoordinates.x,
-  y: rangeControlMaxCoordinates.y
-};
+var rangeMaxControlX = rangeMaxControl.getBoundingClientRect().x;
+var rangeMinControlX = rangeMinControl.getBoundingClientRect().x;
 
-var rangeControlMinStartCoordinates = {
-  x: rangeControlMinCoordinates.x,
-  y: rangeControlMinCoordinates.y
-};
-
-var renderSlider = function (coordinates, control) {
-  var moveX = coordinates.x - rangeBarCoordinates.x;
+var renderSlider = function (x, control) {
+  var moveX = x - rangeBarCoordinates.x;
   var percentage = 100 * moveX / limits;
   var controlPosition = (moveX >= limits - rangeControlWidth) ? limits - rangeControlWidth : moveX;
+  var rangeBarFilledCorrection = 2;
 
   if (control === 'min') {
-    rangeControlMin.style.left = (controlPosition) + 'px';
-    rangeBarFilled.style.left = (controlPosition + rangeControlWidth - 2) + 'px';
+    rangeMinControl.style.left = (controlPosition) + 'px';
+    rangeBarFilled.style.left = (controlPosition + rangeControlWidth - rangeBarFilledCorrection) + 'px';
     rangeMinOutput.textContent = Math.round(percentage);
   } else {
-    rangeControlMax.style.left = (controlPosition) + 'px';
-    rangeBarFilled.style.right = (limits - controlPosition - 2) + 'px';
+    rangeMaxControl.style.left = (controlPosition) + 'px';
+    rangeBarFilled.style.right = (limits - controlPosition - rangeBarFilledCorrection) + 'px';
     rangeMaxOutput.textContent = Math.round(percentage);
   }
 };
 
-renderSlider(rangeControlMaxStartCoordinates, 'max');
-renderSlider(rangeControlMinStartCoordinates, 'min');
+renderSlider(rangeMaxControlX, 'max');
+renderSlider(rangeMinControlX, 'min');
 
 var onRangeControlMousedown = function (e) {
   var control = e.target.classList.contains('range__btn--left') ? 'min' : 'max';
-  var maxCoordinate = rangeControlMax.getBoundingClientRect().x;
-  var minCoordinate = rangeControlMin.getBoundingClientRect().x;
-
-  var startCoordinates = {
-    x: e.clientX,
-    y: e.clientY
-  };
+  var maxCoordinate = rangeMaxControl.getBoundingClientRect().x;
+  var minCoordinate = rangeMinControl.getBoundingClientRect().x;
 
   var onMousemove = function (eMove) {
-    var moveCoordinates = {
-      x: eMove.clientX,
-      y: eMove.clientY
-    };
+    var moveX = eMove.clientX;
 
     var isValidRange = (control === 'min') ?
-      (moveCoordinates.x >= rangeBarCoordinates.x && moveCoordinates.x <= maxCoordinate) :
-      (moveCoordinates.x <= rangeBarCoordinates.right && moveCoordinates.x >= minCoordinate);
+      (moveX >= rangeBarCoordinates.x && moveX <= maxCoordinate) :
+      (moveX <= rangeBarCoordinates.right && moveX >= minCoordinate);
 
     if (!isValidRange) {
       return;
     }
 
-    renderSlider(moveCoordinates, control);
-
-    startCoordinates.x = eMove.clientX;
-    startCoordinates.y = eMove.clientY;
+    renderSlider(moveX, control);
   };
 
-  var onMouseup = function (eUp) {
-    startCoordinates = {
-      x: eUp.clientX,
-      y: eUp.clientY
-    };
-
+  var onMouseup = function () {
     document.removeEventListener('mousemove', onMousemove);
     document.removeEventListener('mouseup', onMouseup);
   };
@@ -137,8 +112,8 @@ var onRangeControlMousedown = function (e) {
   document.addEventListener('mouseup', onMouseup);
 };
 
-rangeControlMin.addEventListener('mousedown', onRangeControlMousedown);
-rangeControlMax.addEventListener('mousedown', onRangeControlMousedown);
+rangeMinControl.addEventListener('mousedown', onRangeControlMousedown);
+rangeMaxControl.addEventListener('mousedown', onRangeControlMousedown);
 
 // --------------- catalog ---------------
 var NAMES = [
