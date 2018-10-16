@@ -81,11 +81,11 @@ var renderSlider = function (coordinates, control) {
 
   if (control === 'min') {
     rangeControlMin.style.left = (controlPosition) + 'px';
-    rangeBarFilled.style.left = (moveX + rangeControlWidth - 2) + 'px';
+    rangeBarFilled.style.left = (controlPosition + rangeControlWidth - 2) + 'px';
     rangeMinOutput.textContent = Math.round(percentage);
   } else {
     rangeControlMax.style.left = (controlPosition) + 'px';
-    rangeBarFilled.style.right = (limits - moveX - 2) + 'px';
+    rangeBarFilled.style.right = (limits - controlPosition - 2) + 'px';
     rangeMaxOutput.textContent = Math.round(percentage);
   }
 };
