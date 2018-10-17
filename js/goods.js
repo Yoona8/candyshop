@@ -74,16 +74,6 @@ var renderGoods = function () {
 
 renderGoods();
 
-// --------------- favorite ---------------
-var onAddToFavoriteClick = function (e) {
-  if (e.target.classList.contains('card__btn-favorite')) {
-    e.preventDefault();
-    e.target.classList.toggle('card__btn-favorite--selected');
-  }
-};
-
-catalog.addEventListener('click', onAddToFavoriteClick);
-
 // --------------- cart ---------------
 var cart = document.querySelector('.goods__cards');
 var cartGoodTemplate = document.querySelector('#card-order').content.querySelector('.goods_card');
