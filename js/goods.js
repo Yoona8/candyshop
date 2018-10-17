@@ -53,34 +53,67 @@ var checkCardValidity = function (cardNumber) {
 // --------------- slider ---------------
 var rangeSlider = document.querySelector('.range');
 var rangeBar = rangeSlider.querySelector('.range__filter');
-var rangeBarWidth = rangeBar.offsetWidth;
+var rangeBarCoordinates = rangeBar.getBoundingClientRect();
 var rangeMinOutput = rangeSlider.querySelector('.range__price--min');
 var rangeMaxOutput = rangeSlider.querySelector('.range__price--max');
+var rangeMinControl = rangeBar.querySelector('.range__btn--left');
+var rangeMaxControl = rangeBar.querySelector('.range__btn--right');
+var rangeBarFilled = rangeBar.querySelector('.range__fill-line');
+var rangeControlWidth = rangeMaxControl.offsetWidth;
+var limits = rangeBarCoordinates.width;
+var rangeMaxControlX = rangeMaxControl.getBoundingClientRect().x;
+var rangeMinControlX = rangeMinControl.getBoundingClientRect().x;
 
-var getRangeMovePercentage = function (element) {
-  var rangeCurrentY = element.offsetLeft;
-  return Math.round((rangeCurrentY / rangeBarWidth) * 100);
-};
+var renderSlider = function (x, control) {
+  var moveX = x - rangeBarCoordinates.x;
+  var percentage = 100 * moveX / limits;
+  var controlPosition = (moveX >= limits - rangeControlWidth) ? limits - rangeControlWidth : moveX;
+  var rangeBarFilledCorrection = 2;
 
-var renderRangePrice = function (element) {
-  var moveX = getRangeMovePercentage(element);
-  var output = rangeMaxOutput;
-
-  if (element.classList.contains('range__btn--left')) {
-    output = rangeMinOutput;
+  if (control === 'min') {
+    rangeMinControl.style.left = (controlPosition) + 'px';
+    rangeBarFilled.style.left = (controlPosition + rangeControlWidth - rangeBarFilledCorrection) + 'px';
+    rangeMinOutput.textContent = Math.round(percentage);
+  } else {
+    rangeMaxControl.style.left = (controlPosition) + 'px';
+    rangeBarFilled.style.right = (limits - controlPosition - rangeBarFilledCorrection) + 'px';
+    rangeMaxOutput.textContent = Math.round(percentage);
   }
-
-  element.style.left = moveX + '%';
-  output.textContent = moveX;
 };
 
-var onRangeButtonMouseup = function (e) {
-  if (e.target.classList.contains('range__btn')) {
-    renderRangePrice(e.target, e.clientX);
-  }
+renderSlider(rangeMaxControlX, 'max');
+renderSlider(rangeMinControlX, 'min');
+
+var onRangeControlMousedown = function (e) {
+  var control = e.target.classList.contains('range__btn--left') ? 'min' : 'max';
+  var maxCoordinate = rangeMaxControl.getBoundingClientRect().x;
+  var minCoordinate = rangeMinControl.getBoundingClientRect().x;
+
+  var onMousemove = function (eMove) {
+    var moveX = eMove.clientX;
+
+    var isValidRange = (control === 'min') ?
+      (moveX >= rangeBarCoordinates.x && moveX <= maxCoordinate) :
+      (moveX <= rangeBarCoordinates.right && moveX >= minCoordinate);
+
+    if (!isValidRange) {
+      return;
+    }
+
+    renderSlider(moveX, control);
+  };
+
+  var onMouseup = function () {
+    document.removeEventListener('mousemove', onMousemove);
+    document.removeEventListener('mouseup', onMouseup);
+  };
+
+  document.addEventListener('mousemove', onMousemove);
+  document.addEventListener('mouseup', onMouseup);
 };
 
-rangeBar.addEventListener('mouseup', onRangeButtonMouseup);
+rangeMinControl.addEventListener('mousedown', onRangeControlMousedown);
+rangeMaxControl.addEventListener('mousedown', onRangeControlMousedown);
 
 // --------------- catalog ---------------
 var NAMES = [
