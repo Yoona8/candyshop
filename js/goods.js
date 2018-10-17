@@ -1,55 +1,5 @@
 'use strict';
 
-// --------------- general functions ---------------
-var getRandomInt = function (min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-};
-
-var getRandomItemsFromArray = function (arr, count) {
-  var totalListOfItems = arr.slice();
-  var items = [];
-
-  for (var i = 0; i < count; i++) {
-    var randomIndex = getRandomInt(0, totalListOfItems.length - 1);
-    items.push(totalListOfItems[randomIndex]);
-    totalListOfItems.splice(randomIndex, 1);
-  }
-
-  return items;
-};
-
-var renderBlockOfElements = function (elements, container, callback) {
-  container.textContent = '';
-
-  var fragment = document.createDocumentFragment();
-
-  elements.forEach(function (element) {
-    fragment.appendChild(callback(element));
-  });
-
-  container.appendChild(fragment);
-};
-
-var toggleFields = function (fields, isEnabled) {
-  for (var i = 0; i < fields.length; i++) {
-    fields[i].disabled = !isEnabled;
-  }
-};
-
-var checkCardValidity = function (cardNumber) {
-  var numbers = cardNumber.split('');
-
-  var sum = numbers
-    .map(function (item) {
-      return (item % 2) ? item * 2 : item;
-    })
-    .reduce(function (acc, number) {
-      return acc + (number >= 10 ? number - 9 : +number);
-    }, 0);
-
-  return sum % 10 === 0;
-};
-
 // --------------- slider ---------------
 var rangeSlider = document.querySelector('.range');
 var rangeBar = rangeSlider.querySelector('.range__filter');
@@ -264,7 +214,7 @@ var getGoodsElement = function (good) {
 };
 
 var getContents = function (count) {
-  var ingredients = getRandomItemsFromArray(INGREDIENTS, count);
+  var ingredients = window.utility.getRandomItemsFromArray(INGREDIENTS, count);
   var content = ingredients.join(', ');
 
   return content.charAt(0).toUpperCase() + content.slice(1);
@@ -276,9 +226,9 @@ var getGoods = function () {
   var images = IMAGES.slice();
 
   for (var i = 0; i < NUMBER_OF_GOODS; i++) {
-    var randomNameIndex = getRandomInt(0, names.length - 1);
+    var randomNameIndex = window.utility.getRandomInt(0, names.length - 1);
     var randomName = names[randomNameIndex];
-    var randomImageIndex = getRandomInt(0, images.length - 1);
+    var randomImageIndex = window.utility.getRandomInt(0, images.length - 1);
     var randomImage = 'img/cards/' + images[randomImageIndex];
 
     names.splice(randomNameIndex, 1);
@@ -287,16 +237,16 @@ var getGoods = function () {
     var good = {
       name: randomName,
       image: randomImage,
-      amount: getRandomInt(0, 20),
-      price: getRandomInt(100, 1500),
-      weight: getRandomInt(30, 300),
+      amount: window.utility.getRandomInt(0, 20),
+      price: window.utility.getRandomInt(100, 1500),
+      weight: window.utility.getRandomInt(30, 300),
       rating: {
-        value: getRandomInt(1, 5),
-        number: getRandomInt(10, 900)
+        value: window.utility.getRandomInt(1, 5),
+        number: window.utility.getRandomInt(10, 900)
       },
       nutritionFacts: {
-        sugar: !!getRandomInt(0, 1),
-        energy: getRandomInt(70, 500),
+        sugar: !!window.utility.getRandomInt(0, 1),
+        energy: window.utility.getRandomInt(70, 500),
         contents: getContents(3)
       }
     };
@@ -313,7 +263,7 @@ var renderGoods = function () {
   catalog.classList.remove('catalog__cards--load');
   catalogLoad.classList.add('visually-hidden');
 
-  renderBlockOfElements(randomGoods, catalog, getGoodsElement);
+  window.utility.renderBlockOfElements(randomGoods, catalog, getGoodsElement);
 };
 
 renderGoods();
@@ -401,7 +351,7 @@ var renderCart = function () {
     totalPrice += current.orderedAmount * current.price;
   });
 
-  renderBlockOfElements(goodsInCart, cart, getCartElement);
+  window.utility.renderBlockOfElements(goodsInCart, cart, getCartElement);
 
   cart.classList.remove('goods__cards--empty');
 
@@ -526,7 +476,7 @@ var initPaymentOptions = function (current) {
   cash.classList.add('visually-hidden');
   payment.querySelector('.' + current + '-wrap').classList.remove('visually-hidden');
 
-  toggleFields(cardInputs, currentPaymentOption === 'payment__card');
+  window.utility.toggleFields(cardInputs, currentPaymentOption === 'payment__card');
 };
 
 initPaymentOptions(currentPaymentOption);
@@ -538,7 +488,7 @@ var renderCheckedPaymentOption = function (option) {
 
   payment.querySelector('.' + option + '-wrap').classList.remove('visually-hidden');
 
-  toggleFields(cardInputs, option === 'payment__card');
+  window.utility.toggleFields(cardInputs, option === 'payment__card');
 
   currentPaymentOption = option;
 };
@@ -554,7 +504,7 @@ payment.addEventListener('change', onPaymentToggleClick);
 var onCardFieldInvalid = function (e) {
   var field = e.target;
   var cardNumber = field.value;
-  var isValid = checkCardValidity(cardNumber);
+  var isValid = window.utility.checkCardValidity(cardNumber);
 
   if (!isValid) {
     field.setCustomValidity('Введите корректный номер карты.');
@@ -573,8 +523,8 @@ var storeInputs = store.querySelectorAll('input');
 var currentDeliveryOption = deliver.querySelector('.toggle-btn__input:checked').id;
 
 var setDeliveryFields = function (current) {
-  toggleFields(courierInputs, current === 'deliver__courier');
-  toggleFields(storeInputs, current !== 'deliver__courier');
+  window.utility.toggleFields(courierInputs, current === 'deliver__courier');
+  window.utility.toggleFields(storeInputs, current !== 'deliver__courier');
 };
 
 var initDeliveryOptions = function (current) {
