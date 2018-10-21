@@ -47,8 +47,6 @@
     save: function (data, url, onSuccess, onError) {
       var xhr = setupXhr(onSuccess, onError);
 
-      xhr.timeout = 30;
-
       xhr.open('POST', url);
       xhr.send(data);
     }
