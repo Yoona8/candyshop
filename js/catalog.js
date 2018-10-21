@@ -17,7 +17,7 @@
     renderGoods();
   };
 
-  window.ajax('https://js.dump.academy/candyshop/data', onSuccess, window.utility.renderErrorMessage);
+  window.ajax.load('https://js.dump.academy/candyshop/data', onSuccess, window.utility.renderErrorMessage);
 
   var cart = document.querySelector('.goods__cards');
   var cartEmptyElement = cart.querySelector('.goods__card-empty');
@@ -168,4 +168,10 @@
   };
 
   cart.addEventListener('click', onIncreaseAmountClick);
+
+  window.catalog = {
+    getGoodsInCart: function () {
+      return goodsInCart;
+    }
+  };
 })();

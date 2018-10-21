@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  var KeyCode = {
+    ESC: 27
+  };
+
   window.utility = {
     getRandomInt: function (min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
@@ -69,6 +73,12 @@
 
       main.textContent = '';
       main.appendChild(fragment);
+    },
+
+    onEscPress: function (e, callback) {
+      if (e.keyCode === KeyCode.ESC) {
+        callback();
+      }
     }
   };
 })();

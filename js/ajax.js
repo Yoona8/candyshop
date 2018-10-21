@@ -7,7 +7,7 @@
     SERVER_ERROR: 500
   };
 
-  window.ajax = function (url, onSuccess, onError) {
+  var setupXhr = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
 
     xhr.responseType = 'json';
@@ -30,9 +30,27 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 300000;
+    xhr.timeout = 30000;
 
-    xhr.open('GET', url);
-    xhr.send();
+    return xhr;
+
+  };
+
+  window.ajax = {
+    load: function (url, onSuccess, onError) {
+      var xhr = setupXhr(onSuccess, onError);
+
+      xhr.open('GET', url);
+      xhr.send();
+    },
+
+    save: function (data, url, onSuccess, onError) {
+      var xhr = setupXhr(onSuccess, onError);
+
+      xhr.timeout = 30;
+
+      xhr.open('POST', url);
+      xhr.send(data);
+    }
   };
 })();
