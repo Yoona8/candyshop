@@ -49,6 +49,26 @@
         }, 0);
 
       return sum % 10 === 0;
+    },
+
+    renderErrorMessage: function (message) {
+      var fragment = document.createDocumentFragment();
+      var main = document.querySelector('main');
+      var errorMessage = document.createElement('p');
+
+      errorMessage.id = 'error';
+      errorMessage.style.textAlign = 'center';
+      errorMessage.style.fontWeight = 700;
+      errorMessage.style.fontSize = '30px';
+      errorMessage.style.color = 'tomato';
+      errorMessage.style.lineHeight = '35px';
+      errorMessage.style.margin = '100px auto';
+      errorMessage.textContent = message;
+
+      fragment.appendChild(errorMessage);
+
+      main.textContent = '';
+      main.appendChild(fragment);
     }
   };
 })();

@@ -9,6 +9,8 @@
     'five'
   ];
 
+  var IMG_PATH = './img/cards/';
+
   var getBasedOnAmountClass = function (amount) {
     var amountClass = 'card--little';
 
@@ -57,7 +59,7 @@
       goodPriceElement.appendChild(goodWeightElement);
 
       var goodImageElement = goodElement.querySelector('.card__img');
-      goodImageElement.src = good.image;
+      goodImageElement.src = IMG_PATH + good.picture;
       goodImageElement.alt = good.name;
 
       return goodElement;
@@ -72,7 +74,7 @@
 
       var cartImageElement = cartElement.querySelector('.card-order__img');
 
-      cartImageElement.src = good.image;
+      cartImageElement.src = IMG_PATH + good.picture;
       cartImageElement.alt = good.name;
 
       return cartElement;
