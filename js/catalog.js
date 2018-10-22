@@ -3,16 +3,21 @@
 (function () {
   var catalog = document.querySelector('.catalog__cards');
   var catalogLoad = catalog.querySelector('.catalog__load');
-  var randomGoods = window.data.getGoods();
+  var goods = [];
 
   var renderGoods = function () {
     catalog.classList.remove('catalog__cards--load');
     catalogLoad.classList.add('visually-hidden');
 
-    window.utility.renderBlockOfElements(randomGoods, catalog, window.goods.getGoodsElement);
+    window.utility.renderBlockOfElements(goods, catalog, window.goods.getGoodsElement);
   };
 
-  renderGoods();
+  var onSuccess = function (data) {
+    goods = data;
+    renderGoods();
+  };
+
+  window.ajax.load('https://js.dump.academy/candyshop/data', onSuccess, window.utility.renderErrorMessage);
 
   var cart = document.querySelector('.goods__cards');
   var cartEmptyElement = cart.querySelector('.goods__card-empty');
@@ -73,7 +78,7 @@
     } else {
       goodsInCart.push(Object.assign({orderedAmount: 1}, {
         name: goodInStore.name,
-        image: goodInStore.image,
+        picture: goodInStore.picture,
         price: goodInStore.price
       }));
     }
@@ -82,7 +87,7 @@
   var onAddToCartClick = function (e) {
     if (e.target.classList.contains('card__btn')) {
       e.preventDefault();
-      addGoodToCart(e.target.closest('.catalog__card'), randomGoods);
+      addGoodToCart(e.target.closest('.catalog__card'), goods);
       renderCart();
       renderGoods();
     }
@@ -109,7 +114,7 @@
   var onRemoveFromCartClick = function (e) {
     if (e.target.classList.contains('card-order__close')) {
       e.preventDefault();
-      removeGoodFromCart(e.target.closest('.card-order'), randomGoods);
+      removeGoodFromCart(e.target.closest('.card-order'), goods);
       renderCart();
       renderGoods();
     }
@@ -120,10 +125,10 @@
   var decreaseCartGoodAmount = function (element) {
     var goodName = getGoodNameFromCart(element);
     var goodInCart = getGoodFromArray(goodsInCart, goodName);
-    var goodInStore = getGoodFromArray(randomGoods, goodName);
+    var goodInStore = getGoodFromArray(goods, goodName);
 
     if (goodInCart.orderedAmount <= 1) {
-      removeGoodFromCart(element, randomGoods);
+      removeGoodFromCart(element, goods);
       return;
     }
 
@@ -144,7 +149,7 @@
   var increaseCartGoodAmount = function (element) {
     var goodName = getGoodNameFromCart(element);
     var goodInCart = getGoodFromArray(goodsInCart, goodName);
-    var goodInStore = getGoodFromArray(randomGoods, goodName);
+    var goodInStore = getGoodFromArray(goods, goodName);
 
     if (goodInStore.amount === 0) {
       return;
@@ -163,4 +168,10 @@
   };
 
   cart.addEventListener('click', onIncreaseAmountClick);
+
+  window.catalog = {
+    getGoodsInCart: function () {
+      return goodsInCart;
+    }
+  };
 })();
