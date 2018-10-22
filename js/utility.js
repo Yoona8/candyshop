@@ -45,8 +45,8 @@
       var numbers = cardNumber.split('');
 
       var sum = numbers
-        .map(function (item) {
-          return (item % 2) ? item * 2 : item;
+        .map(function (item, idx) {
+          return (idx % 2) ? item * 2 : item;
         })
         .reduce(function (acc, number) {
           return acc + (number >= 10 ? number - 9 : +number);
