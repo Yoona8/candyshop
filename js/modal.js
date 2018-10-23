@@ -8,6 +8,7 @@
     modal.classList.add('modal--hidden');
     modalClose.removeEventListener('click', onModalCloseClick);
     document.removeEventListener('keydown', onModalEscPress);
+    modal.removeEventListener('click', onModalOverlayClick);
   };
 
   var onModalCloseClick = function () {
@@ -34,9 +35,11 @@
     modal.addEventListener('click', onModalOverlayClick);
   };
 
-  window.modal = function (modalElement, message) {
-    modal = modalElement;
-    modalClose = modal.querySelector('.modal__close');
-    openModal(message);
+  window.modal = {
+    init: function (modalElement, message) {
+      modal = modalElement;
+      modalClose = modal.querySelector('.modal__close');
+      openModal(message);
+    }
   };
 })();
