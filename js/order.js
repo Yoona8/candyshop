@@ -26,18 +26,18 @@
     var errorModal = document.querySelector('#modal-error');
 
     if (orderData.order.length === 0) {
-      window.modal(errorModal, 'Корзина пуста.');
+      window.modal.init(errorModal, 'Корзина пуста.');
       return;
     }
 
     var successModal = document.querySelector('#modal-success');
 
     var onSuccess = function () {
-      window.modal(successModal);
+      window.modal.init(successModal);
     };
 
     var onError = function (message) {
-      window.modal(errorModal, message);
+      window.modal.init(errorModal, message);
     };
 
     window.ajax.save(orderData, 'https://js.dump.academy/candyshop', onSuccess, onError);
