@@ -14,6 +14,7 @@
 
   var onSuccess = function (data) {
     goods = data;
+    window.filter.init(goods);
     renderGoods();
   };
 
