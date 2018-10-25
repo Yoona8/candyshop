@@ -47,11 +47,9 @@
   };
 
   var renderFilter = function () {
-    for (var key in filterInputIdToGoodQuantityKey) {
-      if (key) {
-        document.querySelector('#' + key + ' ~ .input-btn__item-count').textContent = '(' + goodsQuantities[filterInputIdToGoodQuantityKey[key]] + ')';
-      }
-    }
+    Object.keys(filterInputIdToGoodQuantityKey).forEach(function (key) {
+      document.querySelector('#' + key + ' ~ .input-btn__item-count').textContent = '(' + goodsQuantities[filterInputIdToGoodQuantityKey[key]] + ')';
+    });
   };
 
   window.filter = {
