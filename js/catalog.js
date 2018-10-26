@@ -12,13 +12,34 @@
     window.utility.renderBlockOfElements(goods, catalog, window.goods.getGoodsElement);
   };
 
+  var filterForm = document.querySelector('.catalog__sidebar form');
+  var filterInputs = filterForm.querySelectorAll('input:checked');
+
+  var appliedFilters = {};
+
+  var setInitialFilters = function () {
+    for (var i = 0; i < filterInputs.length; i++) {
+      appliedFilters[filterInputs[i].id] = filterInputs[i].checked;
+    }
+  };
+
   var onSuccess = function (data) {
     goods = data;
+    setInitialFilters();
     window.filter.init(goods);
+    goods = window.filter.getGoods(appliedFilters);
     renderGoods();
   };
 
   window.ajax.load('https://js.dump.academy/candyshop/data', onSuccess, window.utility.renderErrorMessage);
+
+  var onFilterChange = function (e) {
+    appliedFilters[e.target.id] = e.target.checked;
+    goods = window.filter.getGoods(appliedFilters);
+    renderGoods();
+  };
+
+  filterForm.addEventListener('change', onFilterChange, true);
 
   var cart = document.querySelector('.goods__cards');
   var cartEmptyElement = cart.querySelector('.goods__card-empty');

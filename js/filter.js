@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var goods = [];
+
   var kindToGoodsQuantityByKindsKey = {
     'Зефир': 'marshmallows',
     'Жевательная резинка': 'gums',
@@ -22,6 +24,14 @@
     'filter-favorite': 'favorite'
   };
 
+  var filterInputIdToKind = {
+    'Зефир': 'filter-marshmallows',
+    'Жевательная резинка': 'filter-gum',
+    'Мармелад': 'filter-marmalade',
+    'Мороженое': 'filter-icecream',
+    'Газировка': 'filter-soda'
+  };
+
   var goodsQuantities = {
     marshmallows: 0,
     gums: 0,
@@ -35,7 +45,7 @@
     favorite: 0
   };
 
-  var sortGoods = function (goods) {
+  var setQuantities = function () {
     goods.forEach(function (good) {
       var kindKey = kindToGoodsQuantityByKindsKey[good.kind];
       goodsQuantities.noSugar = !good.nutritionFacts.sugar ? goodsQuantities.noSugar + 1 : goodsQuantities.noSugar;
@@ -52,10 +62,45 @@
     });
   };
 
+  var appliedFilters = {};
+
+  var getSortedGoods = function () {
+    var sortedGoods = goods.filter(function (good) {
+      var filterKind = filterInputIdToKind[good.kind];
+      return appliedFilters[filterKind];
+    });
+
+    if (appliedFilters['filter-sugar-free']) {
+      sortedGoods = sortedGoods.filter(function (good) {
+        return !good.nutritionFacts.sugar;
+      });
+    }
+
+    if (appliedFilters['filter-gluten-free']) {
+      sortedGoods = sortedGoods.filter(function (good) {
+        return !good.nutritionFacts.gluten;
+      });
+    }
+
+    if (appliedFilters['filter-vegetarian']) {
+      sortedGoods = sortedGoods.filter(function (good) {
+        return good.nutritionFacts.vegetarian;
+      });
+    }
+
+    return sortedGoods;
+  };
+
   window.filter = {
-    init: function (goods) {
-      sortGoods(goods);
+    init: function (listOfGoods) {
+      goods = listOfGoods;
+      setQuantities();
       renderFilter();
+    },
+
+    getGoods: function (filters) {
+      appliedFilters = filters;
+      return getSortedGoods();
     }
   };
 })();
