@@ -67,26 +67,17 @@
   var getSortedGoods = function () {
     var sortedGoods = goods.filter(function (good) {
       var filterKind = filterInputIdToKind[good.kind];
-      return appliedFilters[filterKind];
+      var isFilterNoSugar = appliedFilters['filter-sugar-free'] ? !good.nutritionFacts.sugar : true;
+      var isFilterNoGluten = appliedFilters['filter-gluten-free'] ? !good.nutritionFacts.gluten : true;
+      var isFilterVegetarian = appliedFilters['filter-vegetarian'] ? good.nutritionFacts.vegetarian : true;
+      var isFilterAvailable = appliedFilters['filter-availability'] ? good.amount > 0 : true;
+
+      return appliedFilters[filterKind] &&
+        isFilterNoSugar &&
+        isFilterNoGluten &&
+        isFilterVegetarian &&
+        isFilterAvailable;
     });
-
-    if (appliedFilters['filter-sugar-free']) {
-      sortedGoods = sortedGoods.filter(function (good) {
-        return !good.nutritionFacts.sugar;
-      });
-    }
-
-    if (appliedFilters['filter-gluten-free']) {
-      sortedGoods = sortedGoods.filter(function (good) {
-        return !good.nutritionFacts.gluten;
-      });
-    }
-
-    if (appliedFilters['filter-vegetarian']) {
-      sortedGoods = sortedGoods.filter(function (good) {
-        return good.nutritionFacts.vegetarian;
-      });
-    }
 
     return sortedGoods;
   };
