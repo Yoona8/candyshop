@@ -15,27 +15,33 @@
   var filterForm = document.querySelector('.catalog__sidebar form');
   var filterInputs = filterForm.querySelectorAll('input:checked');
 
-  var appliedFilters = {};
+  var resetFilters = function () {
+    for (var i = 0; i < filterInputs.length; i++) {
+      filterInputs[i].checked = false;
+    }
+  };
 
-  var setInitialFilters = function () {
+  var getFilters = function () {
+    var appliedFilters = {};
+
     for (var i = 0; i < filterInputs.length; i++) {
       appliedFilters[filterInputs[i].id] = filterInputs[i].checked;
     }
+
+    return appliedFilters;
   };
 
   var onSuccess = function (data) {
     goods = data;
-    setInitialFilters();
+    resetFilters();
     window.filter.init(goods);
-    goods = window.filter.getGoods(appliedFilters);
     renderGoods();
   };
 
   window.ajax.load('https://js.dump.academy/candyshop/data', onSuccess, window.utility.renderErrorMessage);
 
-  var onFilterChange = function (e) {
-    appliedFilters[e.target.id] = e.target.checked;
-    goods = window.filter.getGoods(appliedFilters);
+  var onFilterChange = function () {
+    goods = window.filter.filterGoods(getFilters(), goods);
     renderGoods();
   };
 

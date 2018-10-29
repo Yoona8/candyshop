@@ -62,24 +62,19 @@
     });
   };
 
-  var appliedFilters = {};
-
-  var getSortedGoods = function () {
-    var sortedGoods = goods.filter(function (good) {
+  var getFilteredGoods = function (appliedFilters) {
+    return goods.filter(function (good) {
       var filterKind = filterInputIdToKind[good.kind];
-      var isFilterNoSugar = appliedFilters['filter-sugar-free'] ? !good.nutritionFacts.sugar : true;
-      var isFilterNoGluten = appliedFilters['filter-gluten-free'] ? !good.nutritionFacts.gluten : true;
-      var isFilterVegetarian = appliedFilters['filter-vegetarian'] ? good.nutritionFacts.vegetarian : true;
-      var isFilterAvailable = appliedFilters['filter-availability'] ? good.amount > 0 : true;
-
-      return appliedFilters[filterKind] &&
-        isFilterNoSugar &&
-        isFilterNoGluten &&
-        isFilterVegetarian &&
-        isFilterAvailable;
+      return appliedFilters[filterKind];
+    }).filter(function (good) {
+      return appliedFilters['filter-sugar-free'] ? !good.nutritionFacts.sugar : true;
+    }).filter(function (good) {
+      return appliedFilters['filter-gluten-free'] ? !good.nutritionFacts.gluten : true;
+    }).filter(function (good) {
+      return appliedFilters['filter-vegetarian'] ? good.nutritionFacts.vegetarian : true;
+    }).filter(function (good) {
+      return appliedFilters['filter-availability'] ? good.amount > 0 : true;
     });
-
-    return sortedGoods;
   };
 
   window.filter = {
@@ -89,9 +84,8 @@
       renderFilter();
     },
 
-    getGoods: function (filters) {
-      appliedFilters = filters;
-      return getSortedGoods();
+    filterGoods: function (filters) {
+      return getFilteredGoods(filters);
     }
   };
 })();
