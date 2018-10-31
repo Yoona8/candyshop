@@ -4,16 +4,37 @@
   var catalog = document.querySelector('.catalog__cards');
   var catalogLoad = catalog.querySelector('.catalog__load');
   var goods = [];
+  var sortedGoods = [];
+
+  var getMinMaxPrice = function (listOfGoods) {
+    var prices = [];
+
+    listOfGoods.forEach(function (good) {
+      prices.push(good.price);
+    });
+
+    var sortedPrices = prices.sort(function (a, b) {
+      return a - b;
+    });
+
+    return {
+      min: sortedPrices[0],
+      max: sortedPrices[sortedPrices.length - 1]
+    };
+  };
 
   var renderGoods = function () {
     catalog.classList.remove('catalog__cards--load');
     catalogLoad.classList.add('visually-hidden');
 
-    window.utility.renderBlockOfElements(goods, catalog, window.goods.getGoodsElement);
+    window.utility.renderBlockOfElements(sortedGoods, catalog, window.goods.getGoodsElement);
   };
 
   var filterForm = document.querySelector('.catalog__sidebar form');
-  var filterInputs = filterForm.querySelectorAll('input:checked');
+  var filterInputs = filterForm.querySelectorAll('input');
+  var filtersByFoodTypes = filterForm.querySelectorAll('input[name="food-type"]');
+  var filtersByNutritionFacts = filterForm.querySelectorAll('input[name="food-property"]');
+  var filtersByOtherParams = filterForm.querySelectorAll('input[name="food-property"]');
 
   var resetFilters = function () {
     for (var i = 0; i < filterInputs.length; i++) {
@@ -21,31 +42,60 @@
     }
   };
 
-  var getFilters = function () {
-    var appliedFilters = {};
+  var getSetOfFilters = function (elements) {
+    var filters = [];
 
-    for (var i = 0; i < filterInputs.length; i++) {
-      appliedFilters[filterInputs[i].id] = filterInputs[i].checked;
+    for (var i = 0; i < elements.length; i++) {
+      if (elements[i].checked) {
+        filters.push(elements[i].id);
+      }
     }
+
+    return filters;
+  };
+
+  var getFilters = function () {
+    var appliedFilters = {
+      foodTypes: getSetOfFilters(filtersByFoodTypes),
+      nutritionFacts: getSetOfFilters(filtersByNutritionFacts),
+      prices: window.slider.getPrices(),
+      other: getSetOfFilters(filtersByOtherParams)
+    };
 
     return appliedFilters;
   };
 
   var onSuccess = function (data) {
     goods = data;
+    sortedGoods = data;
     resetFilters();
     window.filter.init(goods);
     renderGoods();
+    window.slider.init(getMinMaxPrice(sortedGoods));
   };
 
   window.ajax.load('https://js.dump.academy/candyshop/data', onSuccess, window.utility.renderErrorMessage);
 
   var onFilterChange = function () {
-    goods = window.filter.filterGoods(getFilters(), goods);
+    sortedGoods = window.filter.getFilteredGoods(getFilters(), goods);
     renderGoods();
   };
 
+  var onPriceControlMousedown = function (e) {
+    if (e.target.classList.contains('range__btn')) {
+      var onMouseup = function () {
+        sortedGoods = window.filter.getFilteredGoods(getFilters(), goods);
+        renderGoods();
+
+        document.removeEventListener('mouseup', onMouseup);
+      };
+
+      document.addEventListener('mouseup', onMouseup);
+    }
+  };
+
   filterForm.addEventListener('change', onFilterChange, true);
+  filterForm.addEventListener('mousedown', onPriceControlMousedown, true);
 
   var cart = document.querySelector('.goods__cards');
   var cartEmptyElement = cart.querySelector('.goods__card-empty');

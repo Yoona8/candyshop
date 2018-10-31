@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var goods = [];
-
   var kindToGoodsQuantityByKindsKey = {
     'Зефир': 'marshmallows',
     'Жевательная резинка': 'gums',
@@ -45,7 +43,7 @@
     favorite: 0
   };
 
-  var setQuantities = function () {
+  var setQuantities = function (goods) {
     goods.forEach(function (good) {
       var kindKey = kindToGoodsQuantityByKindsKey[good.kind];
       goodsQuantities.noSugar = !good.nutritionFacts.sugar ? goodsQuantities.noSugar + 1 : goodsQuantities.noSugar;
@@ -62,30 +60,48 @@
     });
   };
 
-  var getFilteredGoods = function (appliedFilters) {
-    return goods.filter(function (good) {
-      var filterKind = filterInputIdToKind[good.kind];
-      return appliedFilters[filterKind];
-    }).filter(function (good) {
-      return appliedFilters['filter-sugar-free'] ? !good.nutritionFacts.sugar : true;
-    }).filter(function (good) {
-      return appliedFilters['filter-gluten-free'] ? !good.nutritionFacts.gluten : true;
-    }).filter(function (good) {
-      return appliedFilters['filter-vegetarian'] ? good.nutritionFacts.vegetarian : true;
-    }).filter(function (good) {
-      return appliedFilters['filter-availability'] ? good.amount > 0 : true;
-    });
-  };
-
   window.filter = {
     init: function (listOfGoods) {
-      goods = listOfGoods;
-      setQuantities();
+      setQuantities(listOfGoods);
       renderFilter();
     },
 
-    filterGoods: function (filters) {
-      return getFilteredGoods(filters);
+    getFilteredGoods: function (filters, goods) {
+      var filteredGoods = goods;
+
+      if (filters.foodTypes.length > 0) {
+        filteredGoods = goods.filter(function (good) {
+          var filterKind = filterInputIdToKind[good.kind];
+          var isApplied = filters.foodTypes.indexOf(filterKind) > -1;
+          return isApplied;
+        });
+      }
+
+      if (filters.nutritionFacts.length > 0) {
+        filteredGoods = filteredGoods.filter(function (good) {
+          return filters.nutritionFacts.indexOf('filter-sugar-free') > -1 ? !good.nutritionFacts.sugar : true;
+        }).filter(function (good) {
+          return filters.nutritionFacts.indexOf('filter-gluten-free') > -1 ? !good.nutritionFacts.gluten : true;
+        }).filter(function (good) {
+          return filters.nutritionFacts.indexOf('filter-vegetarian') > -1 ? good.nutritionFacts.vegetarian : true;
+        });
+      }
+
+      filteredGoods = filteredGoods.filter(function (good) {
+        return filters.other.indexOf('filter-availability') > -1 ? good.amount > 0 : true;
+      });
+
+      filteredGoods = filteredGoods.filter(function (good) {
+        return good.price >= filters.prices.min && good.price <= filters.prices.max;
+      });
+
+      return filteredGoods;
+    },
+
+    sortByPrice: function (goods) {
+      return goods.sort(function (a, b) {
+        return a.price - b.price;
+      });
     }
   };
 })();
