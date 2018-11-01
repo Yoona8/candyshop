@@ -7,10 +7,8 @@
   var sortedGoods = [];
 
   var getMinMaxPrice = function (listOfGoods) {
-    var prices = [];
-
-    listOfGoods.forEach(function (good) {
-      prices.push(good.price);
+    var prices = listOfGoods.map(function (good) {
+      return good.price;
     });
 
     var sortedPrices = prices.sort(function (a, b) {
@@ -43,15 +41,11 @@
   };
 
   var getSetOfFilters = function (elements) {
-    var filters = [];
-
-    for (var i = 0; i < elements.length; i++) {
-      if (elements[i].checked) {
-        filters.push(elements[i].id);
-      }
-    }
-
-    return filters;
+    return Array.prototype.filter.call(elements, (function (element) {
+      return element.checked;
+    })).map(function (element) {
+      return element.id;
+    });
   };
 
   var getFilters = function () {
