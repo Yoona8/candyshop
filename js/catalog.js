@@ -39,6 +39,7 @@
   var filtersByFoodTypes = filterForm.querySelectorAll('input[name="food-type"]');
   var filtersByNutritionFacts = filterForm.querySelectorAll('input[name="food-property"]');
   var filtersByOtherParams = filterForm.querySelectorAll('input[name="mark"]');
+  var sortingFilters = filterForm.querySelectorAll('input[name="sort"]');
 
   var resetFilters = function (filterElements) {
     for (var i = 0; i < filterElements.length; i++) {
@@ -68,7 +69,8 @@
       foodTypes: getSetOfFilters(filtersByFoodTypes),
       nutritionFacts: getSetOfFilters(filtersByNutritionFacts),
       prices: window.slider.getPrices(),
-      other: getSetOfFilters(filtersByOtherParams)
+      other: getSetOfFilters(filtersByOtherParams),
+      sorting: getSetOfFilters(sortingFilters)
     };
 
     return appliedFilters;
