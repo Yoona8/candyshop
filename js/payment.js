@@ -1,6 +1,11 @@
 'use strict';
 
 (function () {
+  var CardStatus = {
+    UNDEFINED: 'Не определён',
+    APPROVED: 'Одобрен'
+  };
+
   var payment = document.querySelector('.payment');
   var card = payment.querySelector('.payment__card-wrap');
   var cardInputs = card.querySelectorAll('input');
@@ -44,9 +49,31 @@
 
     if (!isValid) {
       field.setCustomValidity('Введите корректный номер карты.');
+    } else {
+      field.setCustomValidity('');
     }
   };
 
   var cardField = card.querySelector('#payment__card-number');
   cardField.addEventListener('input', onCardFieldInvalid);
+
+  var cardStatusElement = card.querySelector('.payment__card-status');
+
+  var changeCardStatus = function () {
+    cardStatusElement.textContent = CardStatus.UNDEFINED;
+
+    for (var i = 0; i < cardInputs.length; i++) {
+      if (!cardInputs[i].validity.valid) {
+        return;
+      }
+    }
+
+    cardStatusElement.textContent = CardStatus.APPROVED;
+  };
+
+  var onCardFieldsInput = function () {
+    changeCardStatus();
+  };
+
+  card.addEventListener('keyup', onCardFieldsInput, true);
 })();

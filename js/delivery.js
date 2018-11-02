@@ -41,5 +41,18 @@
     }
   };
 
+  var storeDeliveryMap = store.querySelector('.deliver__store-map-img');
+
+  var onStoreCheckboxClick = function (e) {
+    var option = e.target.id;
+    var optionPrefix = 'store-';
+    var imgPath = 'img/map/';
+    var imgExt = '.jpg';
+
+    storeDeliveryMap.src = imgPath + option.replace(optionPrefix, '') + imgExt;
+  };
+
   deliver.addEventListener('change', onDeliverToggleClick);
+
+  store.addEventListener('change', onStoreCheckboxClick);
 })();

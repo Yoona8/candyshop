@@ -42,6 +42,9 @@
       goodElement.querySelector('.card__title').textContent = good.name;
       goodElement.querySelector('.card__characteristic').textContent = getNutritionSugarMessage(good.nutritionFacts.sugar) + '. ' + good.nutritionFacts.energy + ' ккал';
       goodElement.querySelector('.card__composition-list').textContent = good.nutritionFacts.contents + '.';
+      if (good.favorite) {
+        goodElement.querySelector('.card__btn-favorite').classList.add('card__btn-favorite--selected');
+      }
 
       var goodRatingElement = goodElement.querySelector('.stars__rating');
       var goodRatingClass = 'stars__rating';

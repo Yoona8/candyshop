@@ -94,13 +94,13 @@
 
           <ul class="catalog__filter">
             <li class="input-btn">
-              <input class="input-btn__input visually-hidden input-btn__input--checkbox" name="mark" value="favorite" type="checkbox" id="filter-favorite" >
+              <input class="input-btn__input visually-hidden input-btn__input--checkbox" name="mark" value="favorite" type="radio" id="filter-favorite" >
               <label class="input-btn__label input-btn__label--checkbox" for="filter-favorite">Только избранное</label>
               <span class="input-btn__item-count">(7)</span>
             </li>
 
             <li class="input-btn">
-              <input class="input-btn__input visually-hidden input-btn__input--checkbox" name="mark" value="availability" type="checkbox" id="filter-availability" >
+              <input class="input-btn__input visually-hidden input-btn__input--checkbox" name="mark" value="availability" type="radio" id="filter-availability" >
               <label class="input-btn__label input-btn__label--checkbox" for="filter-availability">В наличии</label>
               <span class="input-btn__item-count">(7)</span>
             </li>
@@ -144,7 +144,7 @@
     <section class="buy">
       <h2 class="visually-hidden">Оформление покупки</h2>
 
-      <form action="https://js.dump.academy/candyshop" method="post" enctype="multipart/form-data">
+      <form action="https://js.dump.academy/candyshop" method="post" enctype="multipart/form-data" autocomplete="off">
         <section class="goods">
           <div class="goods__wrap container">
             <h2 class="group-title goods__title" id="basket">Твои покупки</h2>
@@ -486,12 +486,11 @@
   <script src="js/ajax.js"></script>
   <script src="js/modal.js"></script>
   <script src="js/goods.js"></script>
-  <script src="js/catalog.js"></script>
-  <script src="js/filter.js"></script>
-  <script src="js/favorite.js"></script>
-  <script src="js/slider.js"></script>
-  <script src="js/order.js"></script>
   <script src="js/payment.js"></script>
   <script src="js/delivery.js"></script>
+  <script src="js/catalog.js"></script>
+  <script src="js/filter.js"></script>
+  <script src="js/slider.js"></script>
+  <script src="js/order.js"></script>
 </body>
 </html>

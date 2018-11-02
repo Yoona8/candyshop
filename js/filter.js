@@ -22,7 +22,7 @@
     'filter-favorite': 'favorite'
   };
 
-  var filterInputIdToKind = {
+  var filterKindToInputId = {
     'Зефир': 'filter-marshmallows',
     'Жевательная резинка': 'filter-gum',
     'Мармелад': 'filter-marmalade',
@@ -60,6 +60,39 @@
     });
   };
 
+  var sortByPopular = function (goods) {
+    return goods;
+  };
+
+  var sortByPriceAsc = function (goods) {
+    return goods.sort(function (a, b) {
+      return a.price - b.price;
+    });
+  };
+
+  var sortByPriceDesc = function (goods) {
+    return goods.sort(function (a, b) {
+      return b.price - a.price;
+    });
+  };
+
+  var sortByRating = function (goods) {
+    return goods.sort(function (a, b) {
+      return b.rating.value - a.rating.value === 0 ? b.rating.number - a.rating.number : b.rating.value - a.rating.value;
+    });
+  };
+
+  var sortingInputIdToSortingFunctionName = {
+    'filter-popular': sortByPopular,
+    'filter-expensive': sortByPriceDesc,
+    'filter-cheep': sortByPriceAsc,
+    'filter-rating': sortByRating
+  };
+
+  var sortGoods = function (filterName, goods) {
+    sortingInputIdToSortingFunctionName[filterName](goods);
+  };
+
   window.filter = {
     init: function (listOfGoods) {
       setQuantities(listOfGoods);
@@ -71,7 +104,7 @@
 
       if (filters.foodTypes.length > 0) {
         filteredGoods = goods.filter(function (good) {
-          var filterKind = filterInputIdToKind[good.kind];
+          var filterKind = filterKindToInputId[good.kind];
           var isApplied = filters.foodTypes.indexOf(filterKind) > -1;
           return isApplied;
         });
@@ -87,21 +120,27 @@
         });
       }
 
-      filteredGoods = filteredGoods.filter(function (good) {
-        return filters.other.indexOf('filter-availability') > -1 ? good.amount > 0 : true;
-      });
+      if (filters.other.indexOf('filter-availability') > -1) {
+        filteredGoods = filteredGoods.filter(function (good) {
+          return filters.other.indexOf('filter-availability') > -1 ? good.amount > 0 : true;
+        });
+      }
+
+      if (filters.other.indexOf('filter-favorite') > -1) {
+        filteredGoods = filteredGoods.filter(function (good) {
+          return good.favorite;
+        });
+      }
 
       filteredGoods = filteredGoods.filter(function (good) {
         return good.price >= filters.prices.min && good.price <= filters.prices.max;
       });
 
-      return filteredGoods;
-    },
+      if (filters.sorting.length > 0) {
+        sortGoods(filters.sorting[0], filteredGoods);
+      }
 
-    sortByPrice: function (goods) {
-      return goods.sort(function (a, b) {
-        return a.price - b.price;
-      });
+      return filteredGoods;
     }
   };
 })();
