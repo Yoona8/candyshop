@@ -87,9 +87,17 @@
         });
       }
 
-      filteredGoods = filteredGoods.filter(function (good) {
-        return filters.other.indexOf('filter-availability') > -1 ? good.amount > 0 : true;
-      });
+      if (filters.other.indexOf('filter-availability') > -1) {
+        filteredGoods = filteredGoods.filter(function (good) {
+          return filters.other.indexOf('filter-availability') > -1 ? good.amount > 0 : true;
+        });
+      }
+
+      if (filters.other.indexOf('filter-favorite') > -1) {
+        filteredGoods = filteredGoods.filter(function (good) {
+          return good.favorite;
+        });
+      }
 
       filteredGoods = filteredGoods.filter(function (good) {
         return good.price >= filters.prices.min && good.price <= filters.prices.max;
