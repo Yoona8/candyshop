@@ -128,9 +128,12 @@
   var cartEmptyElementCopy = cartEmptyElement.cloneNode(true);
   var goodsInCart = [];
   var goodsInCartLink = document.querySelector('.main-header__basket');
+  var orderForm = document.querySelector('.buy form');
+  var orderFormElements = orderForm.querySelectorAll('input:not([disabled]), button[type="submit"]');
 
   var renderCart = function () {
     var goodsInCartCount = goodsInCart.length;
+    window.utility.toggleFields(orderFormElements, goodsInCartCount !== 0);
 
     if (goodsInCartCount === 0) {
       cart.textContent = '';
