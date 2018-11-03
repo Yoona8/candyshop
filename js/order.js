@@ -40,7 +40,7 @@
       window.modal.init(errorModal, message);
     };
 
-    window.ajax.save(orderData, 'https://js.dump.academy/candyshop', onSuccess, onError);
+    window.ajax.save(orderData.user, 'https://js.dump.academy/candyshop', onSuccess, onError);
   };
 
   orderForm.addEventListener('submit', onOrderFormSubmit);

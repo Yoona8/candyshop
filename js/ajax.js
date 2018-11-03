@@ -33,7 +33,6 @@
     xhr.timeout = 30000;
 
     return xhr;
-
   };
 
   window.ajax = {
