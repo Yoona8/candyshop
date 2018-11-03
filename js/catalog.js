@@ -115,7 +115,7 @@
 
   var onShowAllButtonClick = function (e) {
     e.preventDefault();
-    resetFilters();
+    resetFilters(filterInputs);
     sortedGoods = goods;
     renderGoods();
   };
