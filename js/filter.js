@@ -50,8 +50,11 @@
       goodsQuantities.noGluten = !good.nutritionFacts.gluten ? goodsQuantities.noGluten + 1 : goodsQuantities.noGluten;
       goodsQuantities.vegetarian = good.nutritionFacts.vegetarian ? goodsQuantities.vegetarian + 1 : goodsQuantities.vegetarian;
       goodsQuantities.inStore = good.amount > 0 ? goodsQuantities.inStore + 1 : goodsQuantities.inStore;
+      goodsQuantities.favorite = good.favorite ? goodsQuantities.favorite + 1 : goodsQuantities.favorite;
       goodsQuantities[kindKey]++;
     });
+
+    goodsQuantities.price = goods.length;
   };
 
   var renderFilter = function () {
@@ -93,10 +96,17 @@
     sortingInputIdToSortingFunctionName[filterName](goods);
   };
 
+  var priceQuantityElement = document.querySelector('.range__count');
+
+  var renderPriceQuantity = function () {
+    priceQuantityElement.textContent = '(' + goodsQuantities.price + ')';
+  };
+
   window.filter = {
     init: function (listOfGoods) {
       setQuantities(listOfGoods);
       renderFilter();
+      renderPriceQuantity();
     },
 
     getFilteredGoods: function (filters, goods) {
@@ -141,6 +151,16 @@
       }
 
       return filteredGoods;
+    },
+
+    updateFavoriteQuantity: function (good) {
+      goodsQuantities.favorite = good.favorite ? goodsQuantities.favorite + 1 : goodsQuantities.favorite - 1;
+      renderFilter();
+    },
+
+    updatePriceQuantity: function (number) {
+      goodsQuantities.price = number;
+      renderPriceQuantity();
     }
   };
 })();

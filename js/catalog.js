@@ -101,6 +101,7 @@
     if (e.target.classList.contains('range__btn')) {
       var onMouseup = function () {
         sortedGoods = window.filter.getFilteredGoods(getFilters(), goods);
+        window.filter.updatePriceQuantity(sortedGoods.length);
         renderGoods();
 
         document.removeEventListener('mouseup', onMouseup);
@@ -281,6 +282,9 @@
     var goodName = element.closest('.card').querySelector('.card__title').textContent;
     var goodInStore = getGoodFromArray(goods, goodName);
     goodInStore.favorite = element.classList.contains('card__btn-favorite--selected');
+    window.filter.updateFavoriteQuantity(goodInStore);
+    sortedGoods = window.filter.getFilteredGoods(getFilters(), goods);
+    renderGoods();
   };
 
   var onAddToFavoriteClick = function (e) {
