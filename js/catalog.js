@@ -118,6 +118,7 @@
     e.preventDefault();
     resetFilters(filterInputs);
     sortedGoods = goods;
+    window.slider.init(getMinMaxPrice(sortedGoods));
     renderGoods();
   };
 
