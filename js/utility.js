@@ -10,19 +10,6 @@
       return Math.floor(Math.random() * (max - min + 1) + min);
     },
 
-    getRandomItemsFromArray: function (arr, count) {
-      var totalListOfItems = arr.slice();
-      var items = [];
-
-      for (var i = 0; i < count; i++) {
-        var randomIndex = window.utility.getRandomInt(0, totalListOfItems.length - 1);
-        items.push(totalListOfItems[randomIndex]);
-        totalListOfItems.splice(randomIndex, 1);
-      }
-
-      return items;
-    },
-
     renderBlockOfElements: function (elements, container, callback) {
       container.textContent = '';
 
