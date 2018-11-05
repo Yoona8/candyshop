@@ -21,8 +21,6 @@
     setDeliveryFields(current);
   };
 
-  initDeliveryOptions(currentDeliveryOption);
-
   var renderCheckedDeliveryOption = function (option) {
     if (currentDeliveryOption) {
       deliver.querySelector('.' + currentDeliveryOption).classList.add('visually-hidden');
@@ -52,7 +50,7 @@
     storeDeliveryMap.src = imgPath + option.replace(optionPrefix, '') + imgExt;
   };
 
+  initDeliveryOptions(currentDeliveryOption);
   deliver.addEventListener('change', onDeliverToggleClick);
-
   store.addEventListener('change', onStoreCheckboxClick);
 })();

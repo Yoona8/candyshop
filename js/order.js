@@ -13,7 +13,6 @@
   };
 
   var emailField = orderForm.querySelector('#contact-data__email');
-  emailField.addEventListener('invalid', onEmailFieldInvalid);
 
   var onOrderFormSubmit = function (e) {
     e.preventDefault();
@@ -43,5 +42,6 @@
     window.ajax.save(orderData.user, 'https://js.dump.academy/candyshop', onSuccess, onError);
   };
 
+  emailField.addEventListener('invalid', onEmailFieldInvalid);
   orderForm.addEventListener('submit', onOrderFormSubmit);
 })();

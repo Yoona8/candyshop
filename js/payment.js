@@ -20,8 +20,6 @@
     window.utility.toggleFields(cardInputs, currentPaymentOption === 'payment__card');
   };
 
-  initPaymentOptions(currentPaymentOption);
-
   var renderCheckedPaymentOption = function (option) {
     if (currentPaymentOption) {
       payment.querySelector('.' + currentPaymentOption + '-wrap').classList.add('visually-hidden');
@@ -40,8 +38,6 @@
     }
   };
 
-  payment.addEventListener('change', onPaymentToggleClick);
-
   var onCardFieldInvalid = function (e) {
     var field = e.target;
     var cardNumber = field.value;
@@ -55,8 +51,6 @@
   };
 
   var cardField = card.querySelector('#payment__card-number');
-  cardField.addEventListener('input', onCardFieldInvalid);
-
   var cardStatusElement = card.querySelector('.payment__card-status');
 
   var changeCardStatus = function () {
@@ -73,5 +67,8 @@
     changeCardStatus();
   };
 
+  initPaymentOptions(currentPaymentOption);
+  payment.addEventListener('change', onPaymentToggleClick);
+  cardField.addEventListener('input', onCardFieldInvalid);
   card.addEventListener('keyup', onCardFieldsInput, true);
 })();
