@@ -71,4 +71,10 @@
   payment.addEventListener('change', onPaymentToggleClick);
   cardField.addEventListener('input', onCardFieldInvalid);
   card.addEventListener('keyup', onCardFieldsInput, true);
+
+  window.payment = {
+    updateOptions: function () {
+      window.utility.toggleFields(cardInputs, currentPaymentOption === 'payment__card');
+    }
+  };
 })();

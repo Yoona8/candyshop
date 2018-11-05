@@ -32,6 +32,7 @@
     var successModal = document.querySelector('#modal-success');
 
     var onSuccess = function () {
+      window.catalog.clearCart();
       window.modal.init(successModal);
     };
 

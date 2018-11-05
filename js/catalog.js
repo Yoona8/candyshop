@@ -135,6 +135,7 @@
     }, 0);
 
     window.utility.renderBlockOfElements(goodsInCart, cart, window.goods.getCartElement);
+    window.payment.updateOptions();
 
     cart.classList.remove('goods__cards--empty');
 
@@ -302,6 +303,11 @@
   window.catalog = {
     getGoodsInCart: function () {
       return goodsInCart;
+    },
+
+    clearCart: function () {
+      goodsInCart = [];
+      renderCart();
     }
   };
 })();
