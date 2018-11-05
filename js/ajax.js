@@ -7,6 +7,8 @@
     SERVER_ERROR: 500
   };
 
+  var TIMEOUT = 30000;
+
   var setupXhr = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
 
@@ -30,7 +32,7 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 30000;
+    xhr.timeout = TIMEOUT;
 
     return xhr;
   };

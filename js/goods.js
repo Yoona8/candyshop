@@ -12,9 +12,10 @@
   var IMG_PATH = './img/cards/';
 
   var getBasedOnAmountClass = function (amount) {
+    var amountFew = 5;
     var amountClass = 'card--little';
 
-    if (amount > 5) {
+    if (amount > amountFew) {
       amountClass = 'card--in-stock';
     } else if (amount === 0) {
       amountClass = 'card--soon';

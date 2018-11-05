@@ -21,8 +21,10 @@
     };
   };
 
+  var emptyFiltersTemplate = document.querySelector('#empty-filters').content.querySelector('.catalog__empty-filter');
+
   var renderEmptyFilters = function () {
-    var emptyElement = document.querySelector('#empty-filters').content.querySelector('.catalog__empty-filter').cloneNode(true);
+    var emptyElement = emptyFiltersTemplate.cloneNode(true);
     catalog.appendChild(emptyElement);
   };
 
@@ -134,22 +136,7 @@
   var orderForm = document.querySelector('.buy form');
   var orderFormElements = orderForm.querySelectorAll('input:not([disabled]), button[type="submit"]');
 
-  var renderCart = function () {
-    var goodsInCartCount = goodsInCart.length;
-    window.utility.toggleFields(orderFormElements, goodsInCartCount !== 0);
-
-    if (goodsInCartCount === 0) {
-      cart.textContent = '';
-      cart.classList.add('goods__cards--empty');
-      cart.appendChild(cartEmptyElementCopy);
-
-      cartEmptyElement.classList.remove('visually-hidden');
-
-      goodsInCartLink.textContent = 'В корзине ничего нет';
-
-      return;
-    }
-
+  var renderFullCart = function (goodsInCartCount) {
     var totalPrice = goodsInCart.reduce(function (acc, current) {
       return acc + (current.orderedAmount * current.price);
     }, 0);
@@ -161,6 +148,28 @@
     cartEmptyElement.classList.add('visually-hidden');
 
     goodsInCartLink.textContent = 'В корзине ' + goodsInCartCount + ' товара на ' + totalPrice + '₽';
+  };
+
+  var renderEmptyCart = function () {
+    cart.textContent = '';
+    cart.classList.add('goods__cards--empty');
+    cart.appendChild(cartEmptyElementCopy);
+
+    cartEmptyElement.classList.remove('visually-hidden');
+
+    goodsInCartLink.textContent = 'В корзине ничего нет';
+  };
+
+  var renderCart = function () {
+    var goodsInCartCount = goodsInCart.length;
+    window.utility.toggleFields(orderFormElements, goodsInCartCount !== 0);
+
+    if (goodsInCartCount === 0) {
+      renderEmptyCart();
+      return;
+    }
+
+    renderFullCart(goodsInCartCount);
   };
 
   renderCart();
