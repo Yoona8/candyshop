@@ -44,9 +44,9 @@
   var sortingFilters = filterForm.querySelectorAll('input[name="sort"]');
 
   var resetFilters = function (filterElements) {
-    for (var i = 0; i < filterElements.length; i++) {
-      filterElements[i].checked = false;
-    }
+    Array.prototype.forEach.call(filterElements, (function (element) {
+      element.checked = false;
+    }));
   };
 
   var initCatalog = function () {

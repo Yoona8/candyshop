@@ -60,15 +60,13 @@
   var cardStatusElement = card.querySelector('.payment__card-status');
 
   var changeCardStatus = function () {
-    cardStatusElement.textContent = CardStatus.UNDEFINED;
+    var isApproved = Array.prototype.every.call(cardInputs, function (cardInput) {
+      return cardInput.validity.valid;
+    });
 
-    for (var i = 0; i < cardInputs.length; i++) {
-      if (!cardInputs[i].validity.valid) {
-        return;
-      }
-    }
+    var cardStatus = isApproved ? CardStatus.APPROVED : CardStatus.UNDEFINED;
 
-    cardStatusElement.textContent = CardStatus.APPROVED;
+    cardStatusElement.textContent = cardStatus;
   };
 
   var onCardFieldsInput = function () {

@@ -23,9 +23,9 @@
     },
 
     toggleFields: function (fields, isEnabled) {
-      for (var i = 0; i < fields.length; i++) {
-        fields[i].disabled = !isEnabled;
-      }
+      Array.prototype.forEach.call(fields, function (field) {
+        field.disabled = !isEnabled;
+      });
     },
 
     checkCardValidity: function (cardNumber) {
