@@ -30,6 +30,7 @@
       modal.querySelector('.modal__message').textContent = message;
     }
     modal.classList.remove('modal--hidden');
+    modalClose.focus(true);
     modalClose.addEventListener('click', onModalCloseClick);
     document.addEventListener('keydown', onModalEscPress);
     modal.addEventListener('click', onModalOverlayClick);
