@@ -1,27 +1,26 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="./css/normalize.css">
-  <link rel="stylesheet" href="./css/style.css">
-  <title>Сладости</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Candyshop</title>
 </head>
 <body>
   <header class="main-header">
     <div class="main-header__inner container">
-      <a class="main-header__basket" href="#basket">В корзине ничего нет</a>
+      <a class="main-header__basket" href="#basket">The cart is empty</a>
       <div class="main-header__text-wrap">
-        <p class="main-header__text">Интернет-магазин необычных сладостей</p>
-        <h1 class="main-header__title">Candyshop со странностями</h1>
+        <p class="main-header__text">We are selling unusual sweets</p>
+        <h1 class="main-header__title">Candyshop beyond ordinary</h1>
       </div>
     </div>
   </header>
 
   <main>
     <section class="catalog container">
-      <h2 class="visually-hidden">Каталог товаров</h2>
+      <h2 class="visually-hidden">Goods</h2>
 
       <aside class="catalog__sidebar">
         <form action="/">
@@ -326,7 +325,7 @@
               </fieldset>
 
               <div class="deliver__store-map-wrap">
-                <img src="img/map/academicheskaya.jpg" alt="Академическая" class="deliver__store-map-img" width="550" height="321">
+                <img src="assets/img/map/academicheskaya.jpg" alt="Академическая" class="deliver__store-map-img" width="550" height="321">
                 <p class="deliver__store-describe">проспект Науки, д. 19, корп. 3, литер А, ТК «Платформа», 3-й этаж, секция 310</p>
               </div>
             </div>
@@ -394,7 +393,7 @@
       </div>
       <div class="main-footer__copyright">
         <a href="https://htmlacademy.ru/" class="main-footer__copyright-link">
-          <img src="img/htmlacademy-logo.png" alt="htmlacademy" class="main-footer__htmlacademy-logo" width="32" height="40">
+          <img src="assets/img/htmlacademy-logo.png" alt="htmlacademy" class="main-footer__htmlacademy-logo" width="32" height="40">
           <span class="main-footer__logo-description">Сделано в HTML Academy © 2018</span>
         </a>
       </div>
@@ -420,7 +419,7 @@
     <article class="catalog__card card card--in-stock">
       <header class="card__header">
         <h3 class="card__title">Чесночные сливки</h3>
-        <img class="card__img" src="img/cards/ice-garlic.jpg" alt="Мороженное со вкусом чеснока" width="265" height="264">
+        <img class="card__img" src="assets/img/cards/ice-garlic.jpg" alt="Мороженное со вкусом чеснока" width="265" height="264">
         <span class="card__price">230 <span class="card__currency">₽</span><span class="card__weight">/ 70 Г</span></span>
       </header>
       <div class="card__main">
@@ -448,7 +447,7 @@
       <a href="#" class="card-order__close">Удалить товар</a>
       <header class="card-order__header">
         <h3 class="card-order__title">Нинзя-удар васаби</h3>
-        <img src="img/cards/gum-wasabi.jpg" alt="Жевачка со вкусом васаби" class="card-order__img" width="265" height="264">
+        <img src="assets/img/cards/gum-wasabi.jpg" alt="Жевачка со вкусом васаби" class="card-order__img" width="265" height="264">
       </header>
       <div class="card-order__main">
         <p class="card-order__price">660 ₽</p>
@@ -482,15 +481,6 @@
     </div>
   </template>
 
-  <script src="js/utility.js"></script>
-  <script src="js/ajax.js"></script>
-  <script src="js/modal.js"></script>
-  <script src="js/goods.js"></script>
-  <script src="js/payment.js"></script>
-  <script src="js/delivery.js"></script>
-  <script src="js/catalog.js"></script>
-  <script src="js/filter.js"></script>
-  <script src="js/slider.js"></script>
-  <script src="js/order.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
