@@ -1,7 +1,6 @@
 'use strict';
 
 import {render} from './helpers/common';
-import {getGoodTemplate} from './components/good-component';
 import {getGoodCartTemplate} from './components/good-cart-component';
 
 (function () {
@@ -33,9 +32,9 @@ import {getGoodCartTemplate} from './components/good-cart-component';
   };
 
   const renderGoods = function () {
-    sortedGoods.forEach((good) => {
-      render(catalog, getGoodTemplate());
-    });
+    // sortedGoods.forEach((good) => {
+    //   render(catalog, getGoodTemplate());
+    // });
 
     if (sortedGoods.length === 0) {
       renderEmptyFilters();
