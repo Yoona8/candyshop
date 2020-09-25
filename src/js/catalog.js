@@ -5,7 +5,7 @@ import {getGoodCartTemplate} from './components/good-cart-component';
 
 (function () {
   var catalog = document.querySelector('.catalog__cards');
-  var catalogLoad = catalog.querySelector('.catalog__load');
+  // var catalogLoad = catalog.querySelector('.catalog__load');
   var goods = [];
   var sortedGoods = [];
 
@@ -55,8 +55,8 @@ import {getGoodCartTemplate} from './components/good-cart-component';
   };
 
   var initCatalog = function () {
-    catalog.classList.remove('catalog__cards--load');
-    catalogLoad.classList.add('visually-hidden');
+    // catalog.classList.remove('catalog__cards--load');
+    // catalogLoad.classList.add('visually-hidden');
     window.filter.init(goods);
     resetFilters(filterInputs);
     renderGoods();
@@ -139,7 +139,7 @@ import {getGoodCartTemplate} from './components/good-cart-component';
       return acc + (current.orderedAmount * current.price);
     }, 0);
 
-    goodsInCart.forEach((good) => {
+    goodsInCart.forEach(() => {
       render(cart, getGoodCartTemplate());
     });
     window.payment.updateOptions();
@@ -301,8 +301,8 @@ import {getGoodCartTemplate} from './components/good-cart-component';
   filterForm.addEventListener('mousedown', onPriceControlMousedown, true);
   showAllButton.addEventListener('click', onShowAllButtonClick);
   renderCart();
-  catalog.addEventListener('click', onAddToCartClick);
-  catalog.addEventListener('click', onAddToFavoriteClick);
+  // catalog.addEventListener('click', onAddToCartClick);
+  // catalog.addEventListener('click', onAddToFavoriteClick);
   cart.addEventListener('click', onRemoveFromCartClick);
   cart.addEventListener('click', onDecreaseAmountClick);
   cart.addEventListener('click', onIncreaseAmountClick);

@@ -1,72 +1,7 @@
 (function () {
-  var MODIFIERS = [
-    'one',
-    'two',
-    'three',
-    'four',
-    'five'
-  ];
-
   var IMG_PATH = './img/cards/';
 
-  var getBasedOnAmountClass = function (amount) {
-    var amountFew = 5;
-    var amountClass = 'card--little';
-
-    if (amount > amountFew) {
-      amountClass = 'card--in-stock';
-    } else if (amount === 0) {
-      amountClass = 'card--soon';
-    }
-
-    return amountClass;
-  };
-
-  var getRatingModifier = function (rating) {
-    return MODIFIERS[rating - 1];
-  };
-
-  var getNutritionSugarMessage = function (isSugar) {
-    return isSugar ? 'Содержит сахар' : 'Без сахара';
-  };
-
-  // var goodTemplate = document.querySelector('#card').content.querySelector('.catalog__card');
-  // var cartGoodTemplate = document.querySelector('#card-order').content.querySelector('.goods_card');
-
   window.goods = {
-    getGoodsElement: function (good) {
-      var goodElement = goodTemplate.cloneNode(true);
-      goodElement.classList.add(getBasedOnAmountClass(good.amount));
-      goodElement.querySelector('.star__count').textContent = '(' + good.rating.number + ')';
-      goodElement.querySelector('.card__title').textContent = good.name;
-      goodElement.querySelector('.card__characteristic').textContent = getNutritionSugarMessage(good.nutritionFacts.sugar) + '. ' + good.nutritionFacts.energy + ' ккал';
-      goodElement.querySelector('.card__composition-list').textContent = good.nutritionFacts.contents + '.';
-      if (good.favorite) {
-        goodElement.querySelector('.card__btn-favorite').classList.add('card__btn-favorite--selected');
-      }
-
-      var goodRatingElement = goodElement.querySelector('.stars__rating');
-      var goodRatingClass = 'stars__rating';
-      goodRatingElement.classList = '';
-      goodRatingElement.classList.add(goodRatingClass);
-      goodRatingElement.classList.add(goodRatingClass + '--' + getRatingModifier(good.rating.value));
-      goodRatingElement.textContent = 'Рейтинг: ' + good.rating.value + ' звёзд';
-
-      var goodPriceElement = goodElement.querySelector('.card__price');
-      var goodCurrencyElement = goodPriceElement.querySelector('.card__currency');
-      var goodWeightElement = goodPriceElement.querySelector('.card__weight');
-      goodWeightElement.textContent = '/ ' + good.weight + ' Г';
-      goodPriceElement.textContent = good.price + ' ';
-      goodPriceElement.appendChild(goodCurrencyElement);
-      goodPriceElement.appendChild(goodWeightElement);
-
-      var goodImageElement = goodElement.querySelector('.card__img');
-      goodImageElement.src = IMG_PATH + good.picture;
-      goodImageElement.alt = good.name;
-
-      return goodElement;
-    },
-
     getCartElement: function (good) {
       var cartElement = cartGoodTemplate.cloneNode(true);
 

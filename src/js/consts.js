@@ -5,4 +5,10 @@ const RenderPosition = {
   AFTER_END: 'afterend'
 };
 
-export {RenderPosition};
+const StorageLoad = {
+  EMPTY: 0,
+  FEW: 5,
+  ENOUGH: 6
+};
+
+export {RenderPosition, StorageLoad};

@@ -16,8 +16,11 @@ import {getSortTemplate} from './components/sort-component';
 import {getGoodTemplate} from './components/good-component';
 import {getCatalogTemplate} from './components/catalog-component';
 import {getLoadMoreTemplate} from './components/load-more-component';
+import {getGoods} from './mocks/goods-mock';
 
 const GOODS_COUNT = 6;
+
+const goods = getGoods(GOODS_COUNT);
 
 const filterFormElement = document.querySelector('#filter-form');
 
@@ -41,6 +44,6 @@ render(catalogContainerElement, getLoadMoreTemplate());
 const catalogElement = catalogContainerElement
   .querySelector('.catalog__cards');
 
-for (let i = 0; i < GOODS_COUNT; i++) {
-  render(catalogElement, getGoodTemplate());
-}
+goods.forEach((good) => {
+  render(catalogElement, getGoodTemplate(good));
+});
