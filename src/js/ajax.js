@@ -1,4 +1,4 @@
-'use strict';
+import {getGoods} from './mocks/goods-mock';
 
 (function () {
   var Code = {
@@ -39,10 +39,12 @@
 
   window.ajax = {
     load: function (url, onSuccess, onError) {
-      var xhr = setupXhr(onSuccess, onError);
+      // var xhr = setupXhr(onSuccess, onError);
 
-      xhr.open('GET', url);
-      xhr.send();
+      // xhr.open('GET', url);
+      // xhr.send();
+      const goods = getGoods(10);
+      onSuccess(goods);
     },
 
     save: function (data, url, onSuccess, onError) {

@@ -1,5 +1,3 @@
-'use strict';
-
 (function () {
   var kindToGoodsQuantityByKindsKey = {
     'Зефир': 'marshmallows',
