@@ -289,7 +289,7 @@
     }
   };
 
-  window.ajax.load('https://js.dump.academy/candyshop/data', onSuccess, window.utility.renderErrorMessage);
+  // window.ajax.load('https://js.dump.academy/candyshop/data', onSuccess, window.utility.renderErrorMessage);
   filterForm.addEventListener('change', onFilterChange, true);
   filterForm.addEventListener('mousedown', onPriceControlMousedown, true);
   showAllButton.addEventListener('click', onShowAllButtonClick);
