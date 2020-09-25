@@ -1,4 +1,4 @@
-'use strict';
+import {getGoodTemplate} from './components/good-component';
 
 (function () {
   var MODIFIERS = [
@@ -66,7 +66,13 @@
       goodImageElement.src = IMG_PATH + good.picture;
       goodImageElement.alt = good.name;
 
-      return goodElement;
+      // return goodElement;
+
+      const element = document.createElement('div');
+
+      element.innerHTML = getGoodTemplate().trim();
+
+      return element.firstChild;
     },
 
     getCartElement: function (good) {

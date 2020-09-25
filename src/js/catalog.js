@@ -29,6 +29,7 @@
   };
 
   var renderGoods = function () {
+    console.log(window.goods.getGoodsElement(sortedGoods[0]));
     window.utility.renderBlockOfElements(sortedGoods, catalog, window.goods.getGoodsElement);
 
     if (sortedGoods.length === 0) {
