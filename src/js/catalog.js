@@ -1,5 +1,9 @@
 'use strict';
 
+import {render} from './helpers/common';
+import {getGoodTemplate} from './components/good-component';
+import {getGoodCartTemplate} from './components/good-cart-component';
+
 (function () {
   var catalog = document.querySelector('.catalog__cards');
   var catalogLoad = catalog.querySelector('.catalog__load');
@@ -28,9 +32,10 @@
     catalog.appendChild(emptyElement);
   };
 
-  var renderGoods = function () {
-    console.log(window.goods.getGoodsElement(sortedGoods[0]));
-    window.utility.renderBlockOfElements(sortedGoods, catalog, window.goods.getGoodsElement);
+  const renderGoods = function () {
+    sortedGoods.forEach((good) => {
+      render(catalog, getGoodTemplate());
+    });
 
     if (sortedGoods.length === 0) {
       renderEmptyFilters();
@@ -135,7 +140,9 @@
       return acc + (current.orderedAmount * current.price);
     }, 0);
 
-    window.utility.renderBlockOfElements(goodsInCart, cart, window.goods.getCartElement);
+    goodsInCart.forEach((good) => {
+      render(cart, getGoodCartTemplate());
+    });
     window.payment.updateOptions();
 
     cart.classList.remove('goods__cards--empty');

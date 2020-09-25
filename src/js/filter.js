@@ -57,7 +57,7 @@
 
   var renderFilter = function () {
     Object.keys(filterInputIdToGoodQuantityKey).forEach(function (key) {
-      document.querySelector('#' + key + ' ~ .input-btn__item-count').textContent = '(' + goodsQuantities[filterInputIdToGoodQuantityKey[key]] + ')';
+      // document.querySelector('#' + key + ' ~ .input-btn__item-count').textContent = '(' + goodsQuantities[filterInputIdToGoodQuantityKey[key]] + ')';
     });
   };
 

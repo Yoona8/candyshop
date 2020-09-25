@@ -1,5 +1,3 @@
-import {getGoodTemplate} from './components/good-component';
-
 (function () {
   var MODIFIERS = [
     'one',
@@ -32,8 +30,8 @@ import {getGoodTemplate} from './components/good-component';
     return isSugar ? 'Содержит сахар' : 'Без сахара';
   };
 
-  var goodTemplate = document.querySelector('#card').content.querySelector('.catalog__card');
-  var cartGoodTemplate = document.querySelector('#card-order').content.querySelector('.goods_card');
+  // var goodTemplate = document.querySelector('#card').content.querySelector('.catalog__card');
+  // var cartGoodTemplate = document.querySelector('#card-order').content.querySelector('.goods_card');
 
   window.goods = {
     getGoodsElement: function (good) {
@@ -66,13 +64,7 @@ import {getGoodTemplate} from './components/good-component';
       goodImageElement.src = IMG_PATH + good.picture;
       goodImageElement.alt = good.name;
 
-      // return goodElement;
-
-      const element = document.createElement('div');
-
-      element.innerHTML = getGoodTemplate().trim();
-
-      return element.firstChild;
+      return goodElement;
     },
 
     getCartElement: function (good) {

@@ -4,22 +4,6 @@ const KeyCode = {
 
 (function () {
   window.utility = {
-    getRandomInt: function (min, max) {
-      return Math.floor(Math.random() * (max - min + 1) + min);
-    },
-
-    renderBlockOfElements: function (elements, container, callback) {
-      container.textContent = '';
-
-      const fragment = document.createDocumentFragment();
-
-      elements.forEach(function (element) {
-        fragment.appendChild(callback(element));
-      });
-
-      container.appendChild(fragment);
-    },
-
     toggleFields: function (fields, isEnabled) {
       Array.prototype.forEach.call(fields, function (field) {
         field.disabled = !isEnabled;
