@@ -11,4 +11,23 @@ const StorageLoad = {
   ENOUGH: 6
 };
 
-export {RenderPosition, StorageLoad};
+const Category = {
+  ICE_CREAM: 'ice-cream',
+  SODA: 'soda',
+  GUM: 'gum',
+  MARMALADE: 'marmalade',
+  MARSHMALLOW: 'marshmallow'
+};
+
+const NutritionFact = {
+  VEGETARIAN: 'vegetarian',
+  SUGAR_FREE: 'sugar-free',
+  GLUTEN_FREE: 'gluten-free'
+};
+
+export {
+  RenderPosition,
+  StorageLoad,
+  Category,
+  NutritionFact
+};

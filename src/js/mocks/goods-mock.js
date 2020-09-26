@@ -30,7 +30,7 @@ const NAMES = [
 const TYPES = [
   'marshmallow',
   'gum',
-  'ice cream',
+  'ice-cream',
   'soda',
   'marmalade'
 ];

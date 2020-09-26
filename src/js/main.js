@@ -17,15 +17,22 @@ import {getGoodTemplate} from './components/good-component';
 import {getCatalogTemplate} from './components/catalog-component';
 import {getLoadMoreTemplate} from './components/load-more-component';
 import {getGoods} from './mocks/goods-mock';
+import {getCategoryFilters} from './mocks/filter-mock';
 
 const GOODS_COUNT = 6;
 
 const goods = getGoods(GOODS_COUNT);
+const categoryFilters = getCategoryFilters(goods);
+console.log(categoryFilters);
 
 const filterFormElement = document.querySelector('#filter-form');
 
-render(filterFormElement, getFilterTemplate(), RenderPosition.AFTER_BEGIN);
-render(filterFormElement, getFilterTemplate(), RenderPosition.AFTER_BEGIN);
+render(
+  filterFormElement,
+  getFilterTemplate(categoryFilters),
+  RenderPosition.AFTER_BEGIN
+);
+// render(filterFormElement, getFilterTemplate(), RenderPosition.AFTER_BEGIN);
 
 const priceRangeElement = document.querySelector('#filter-form-price');
 
