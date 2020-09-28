@@ -1,62 +1,4 @@
 (function () {
-  var filterInputIdToGoodQuantityKey = {
-    'filter-availability': 'inStore',
-    'filter-favorite': 'favorite'
-  };
-
-  var filterKindToInputId = {
-    'Зефир': 'filter-marshmallows',
-    'Жевательная резинка': 'filter-gum',
-    'Мармелад': 'filter-marmalade',
-    'Мороженое': 'filter-icecream',
-    'Газировка': 'filter-soda'
-  };
-
-  var goodsQuantities = {
-    marshmallows: 0,
-    gums: 0,
-    marmalades: 0,
-    iceCreams: 0,
-    sodas: 0,
-    noGluten: 0,
-    noSugar: 0,
-    vegetarian: 0,
-    inStore: 0,
-    favorite: 0
-  };
-
-  var renderFilter = function () {
-    Object.keys(filterInputIdToGoodQuantityKey).forEach(function (key) {
-      // document.querySelector('#' + key + ' ~ .input-btn__item-count').textContent = '(' + goodsQuantities[filterInputIdToGoodQuantityKey[key]] + ')';
-    });
-  };
-
-  var filterByTypes = function (filters, goods) {
-    if (filters.length > 0) {
-      return goods.filter(function (good) {
-        var filterKind = filterKindToInputId[good.kind];
-        var isApplied = filters.indexOf(filterKind) > -1;
-        return isApplied;
-      });
-    }
-
-    return goods;
-  };
-
-  var filterByNutritionFacts = function (filters, goods) {
-    if (filters.length > 0) {
-      return goods.filter(function (good) {
-        return filters.indexOf('filter-sugar-free') > -1 ? !good.nutritionFacts.sugar : true;
-      }).filter(function (good) {
-        return filters.indexOf('filter-gluten-free') > -1 ? !good.nutritionFacts.gluten : true;
-      }).filter(function (good) {
-        return filters.indexOf('filter-vegetarian') > -1 ? good.nutritionFacts.vegetarian : true;
-      });
-    }
-
-    return goods;
-  };
-
   var filterByAvailability = function (filters, goods) {
     if (filters.indexOf('filter-availability') > -1) {
       return goods.filter(function (good) {
@@ -123,12 +65,11 @@
   var priceQuantityElement = document.querySelector('.range__count');
 
   var renderPriceQuantity = function () {
-    priceQuantityElement.textContent = '(' + goodsQuantities.price + ')';
+    // priceQuantityElement.textContent = '(' + goodsQuantities.price + ')';
   };
 
   window.filter = {
     init: function (listOfGoods) {
-      renderFilter();
       renderPriceQuantity();
     },
 

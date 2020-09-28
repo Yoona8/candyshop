@@ -17,16 +17,17 @@ import {getGoodTemplate} from './components/good-component';
 import {getCatalogTemplate} from './components/catalog-component';
 import {getLoadMoreTemplate} from './components/load-more-component';
 import {getGoods} from './mocks/goods-mock';
-import {getCategoryFilters, getNutritionFilters} from './mocks/filter-mock';
+import {
+  getCategoryFilters,
+  getNutritionFilters,
+  getOptionFilters
+} from './mocks/filter-mock';
 
 const GOODS_COUNT = 6;
 
 const goods = getGoods(GOODS_COUNT);
 const categoryFilters = getCategoryFilters(goods);
 const nutritionFilters = getNutritionFilters(goods);
-
-console.log(nutritionFilters);
-
 const filterFormElement = document.querySelector('#filter-form');
 
 render(
@@ -41,8 +42,13 @@ render(
 );
 
 const priceRangeElement = document.querySelector('#filter-form-price');
+const optionFilters = getOptionFilters(goods);
 
-render(priceRangeElement, getOptionsTemplate(), RenderPosition.AFTER_END);
+render(
+  priceRangeElement,
+  getOptionsTemplate(optionFilters),
+  RenderPosition.AFTER_END
+);
 
 const showAllElement = document.querySelector('#filter-form-show-all');
 

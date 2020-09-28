@@ -25,9 +25,15 @@ const NutritionFact = {
   GLUTEN_FREE: 'gluten-free'
 };
 
+const Option = {
+  FAVORITE: 'favorites',
+  IN_STOCK: 'in-stock'
+};
+
 export {
   RenderPosition,
   StorageLoad,
   Category,
-  NutritionFact
+  NutritionFact,
+  Option
 };
