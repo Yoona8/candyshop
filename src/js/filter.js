@@ -1,8 +1,5 @@
 (function () {
   var filterInputIdToGoodQuantityKey = {
-    'filter-sugar-free': 'noSugar',
-    'filter-gluten-free': 'noGluten',
-    'filter-vegetarian': 'vegetarian',
     'filter-availability': 'inStore',
     'filter-favorite': 'favorite'
   };
@@ -26,18 +23,6 @@
     vegetarian: 0,
     inStore: 0,
     favorite: 0
-  };
-
-  var setQuantities = function (goods) {
-    goods.forEach(function (good) {
-      goodsQuantities.noSugar = !good.nutritionFacts.sugar ? goodsQuantities.noSugar + 1 : goodsQuantities.noSugar;
-      goodsQuantities.noGluten = !good.nutritionFacts.gluten ? goodsQuantities.noGluten + 1 : goodsQuantities.noGluten;
-      goodsQuantities.vegetarian = good.nutritionFacts.vegetarian ? goodsQuantities.vegetarian + 1 : goodsQuantities.vegetarian;
-      goodsQuantities.inStore = good.amount > 0 ? goodsQuantities.inStore + 1 : goodsQuantities.inStore;
-      goodsQuantities.favorite = good.favorite ? goodsQuantities.favorite + 1 : goodsQuantities.favorite;
-    });
-
-    goodsQuantities.price = goods.length;
   };
 
   var renderFilter = function () {
@@ -143,7 +128,6 @@
 
   window.filter = {
     init: function (listOfGoods) {
-      setQuantities(listOfGoods);
       renderFilter();
       renderPriceQuantity();
     },

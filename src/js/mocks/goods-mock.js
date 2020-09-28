@@ -73,6 +73,8 @@ const getGood = () => {
     },
     nutritionFacts: {
       isSugar: !getRandomInt(0, 1),
+      isGluten: !getRandomInt(0, 1),
+      isVegetarian: !getRandomInt(0, 1),
       energy: getRandomInt(100, 1000),
       contents: new Set(getRandomItemsFromArray(INGREDIENTS))
     }
