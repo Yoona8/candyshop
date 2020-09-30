@@ -23,7 +23,8 @@ import {
   getOptionFilters
 } from './mocks/filter-mock';
 
-const GOODS_COUNT = 6;
+const GOODS_COUNT = 14;
+const GOODS_COUNT_STEP = 6;
 
 const goods = getGoods(GOODS_COUNT);
 const categoryFilters = getCategoryFilters(goods);
@@ -58,11 +59,37 @@ const catalogContainerElement = document
   .querySelector('.catalog__cards-wrap');
 
 render(catalogContainerElement, getCatalogTemplate());
-render(catalogContainerElement, getLoadMoreTemplate());
+
+if (goods.length > GOODS_COUNT_STEP) {
+  let renderedGoodsCount = GOODS_COUNT_STEP;
+
+  render(catalogContainerElement, getLoadMoreTemplate());
+
+  const loadMoreButton = catalogContainerElement
+    .querySelector('.catalog__btn-more');
+
+  const onLoadMoreClick = (evt) => {
+    evt.preventDefault();
+
+    goods.slice(renderedGoodsCount, renderedGoodsCount + GOODS_COUNT_STEP)
+      .forEach((good) => {
+        render(catalogElement, getGoodTemplate(good));
+      });
+
+    renderedGoodsCount += GOODS_COUNT_STEP;
+
+    if (renderedGoodsCount >= goods.length) {
+      console.log('Rendered all the goods!');
+      loadMoreButton.remove();
+    }
+  };
+
+  loadMoreButton.addEventListener('click', onLoadMoreClick);
+}
 
 const catalogElement = catalogContainerElement
   .querySelector('.catalog__cards');
 
-goods.forEach((good) => {
+goods.slice(0, GOODS_COUNT_STEP).forEach((good) => {
   render(catalogElement, getGoodTemplate(good));
 });
