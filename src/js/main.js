@@ -9,13 +9,13 @@ import './slider';
 import './catalog';
 import './order';
 import {render} from './helpers/common';
-import {RenderPosition} from './consts';
-import {getFilterTemplate} from './components/filter-component';
-import {getOptionsTemplate} from './components/options-component';
-import {getSortTemplate} from './components/sort-component';
-import {getGoodTemplate} from './components/good-component';
-import {getCatalogTemplate} from './components/catalog-component';
-import {getLoadMoreTemplate} from './components/load-more-component';
+import {RenderPosition} from './helpers/common';
+import FilterComponent from './components/filter-component';
+import OptionsComponent from './components/options-component';
+import SortComponent from './components/sort-component';
+import GoodComponent from './components/good-component';
+import CatalogComponent from './components/catalog-component';
+import LoadMoreComponent from './components/load-more-component';
 import {getGoods} from './mocks/goods-mock';
 import {
   getCategoryFilters,
@@ -31,65 +31,74 @@ const categoryFilters = getCategoryFilters(goods);
 const nutritionFilters = getNutritionFilters(goods);
 const filterFormElement = document.querySelector('#filter-form');
 
+const nutritionFilterComponent = new FilterComponent(nutritionFilters);
+const categoryFilterComponent = new FilterComponent(categoryFilters);
+
 render(
   filterFormElement,
-  getFilterTemplate(nutritionFilters),
+  nutritionFilterComponent.getElement(),
   RenderPosition.AFTER_BEGIN
 );
 render(
   filterFormElement,
-  getFilterTemplate(categoryFilters),
+  categoryFilterComponent.getElement(),
   RenderPosition.AFTER_BEGIN
 );
 
 const priceRangeElement = document.querySelector('#filter-form-price');
 const optionFilters = getOptionFilters(goods);
+const optionsComponent = new OptionsComponent(optionFilters);
 
 render(
   priceRangeElement,
-  getOptionsTemplate(optionFilters),
+  optionsComponent.getElement(),
   RenderPosition.AFTER_END
 );
 
 const showAllElement = document.querySelector('#filter-form-show-all');
 
-render(showAllElement, getSortTemplate(), RenderPosition.BEFORE_BEGIN);
+render(
+  showAllElement,
+  new SortComponent().getElement(),
+  RenderPosition.BEFORE_BEGIN
+);
 
 const catalogContainerElement = document
   .querySelector('.catalog__cards-wrap');
 
-render(catalogContainerElement, getCatalogTemplate());
+render(catalogContainerElement, new CatalogComponent().getElement());
 
 if (goods.length > GOODS_COUNT_STEP) {
   let renderedGoodsCount = GOODS_COUNT_STEP;
 
-  render(catalogContainerElement, getLoadMoreTemplate());
+  const loadMoreComponent = new LoadMoreComponent();
 
-  const loadMoreButton = catalogContainerElement
-    .querySelector('.catalog__btn-more');
+  render(catalogContainerElement, loadMoreComponent.getElement());
 
   const onLoadMoreClick = (evt) => {
     evt.preventDefault();
 
     goods.slice(renderedGoodsCount, renderedGoodsCount + GOODS_COUNT_STEP)
       .forEach((good) => {
-        render(catalogElement, getGoodTemplate(good));
+        const goodComponent = new GoodComponent(good);
+        render(catalogElement, goodComponent.getElement());
       });
 
     renderedGoodsCount += GOODS_COUNT_STEP;
 
     if (renderedGoodsCount >= goods.length) {
-      console.log('Rendered all the goods!');
-      loadMoreButton.remove();
+      loadMoreComponent.getElement().remove();
+      loadMoreComponent.removeElement();
     }
   };
 
-  loadMoreButton.addEventListener('click', onLoadMoreClick);
+  loadMoreComponent.getElement().addEventListener('click', onLoadMoreClick);
 }
 
 const catalogElement = catalogContainerElement
   .querySelector('.catalog__cards');
 
 goods.slice(0, GOODS_COUNT_STEP).forEach((good) => {
-  render(catalogElement, getGoodTemplate(good));
+  const goodComponent = new GoodComponent(good);
+  render(catalogElement, goodComponent.getElement());
 });

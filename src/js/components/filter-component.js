@@ -1,3 +1,5 @@
+import AbstractComponent from './abstract-component';
+
 const getFilterItemTemplate = (filter) => {
   const {name, count} = filter;
   const title = name.replace('-', ' ');
@@ -23,7 +25,7 @@ const getFilterItemTemplate = (filter) => {
   `;
 };
 
-export const getFilterTemplate = (filters) => {
+const getFilterTemplate = (filters) => {
   const filtersTemplate = filters
     .map((filter) => getFilterItemTemplate(filter))
     .join('');
@@ -34,3 +36,15 @@ export const getFilterTemplate = (filters) => {
     </ul>
   `;
 };
+
+export default class FilterComponent extends AbstractComponent {
+  constructor(filters) {
+    super();
+
+    this._filters = filters;
+  }
+
+  _getTemplate() {
+    return getFilterTemplate(this._filters);
+  }
+}

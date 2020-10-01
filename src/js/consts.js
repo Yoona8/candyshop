@@ -1,10 +1,3 @@
-const RenderPosition = {
-  BEFORE_END: 'beforeend',
-  BEFORE_BEGIN: 'beforebegin',
-  AFTER_BEGIN: 'afterbegin',
-  AFTER_END: 'afterend'
-};
-
 const StorageLoad = {
   EMPTY: 0,
   FEW: 5,
@@ -31,7 +24,6 @@ const Option = {
 };
 
 export {
-  RenderPosition,
   StorageLoad,
   Category,
   NutritionFact,

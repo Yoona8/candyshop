@@ -1,4 +1,5 @@
 import {StorageLoad} from '../consts';
+import AbstractComponent from './abstract-component';
 
 const RATING_MODIFIERS = [
   'one',
@@ -18,7 +19,7 @@ const getAmountClassName = (amount) => {
   }
 };
 
-export const getGoodTemplate = (good) => {
+const getGoodTemplate = (good) => {
   const {
     isFavorite,
     name,
@@ -83,3 +84,15 @@ export const getGoodTemplate = (good) => {
     </article>
   `;
 };
+
+export default class GoodComponent extends AbstractComponent {
+  constructor(good) {
+    super();
+
+    this._good = good;
+  }
+
+  _getTemplate() {
+    return getGoodTemplate(this._good);
+  }
+}

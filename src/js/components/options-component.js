@@ -1,3 +1,5 @@
+import AbstractComponent from './abstract-component';
+
 const getOptionTemplate = (filter) => {
   const {name, count} = filter;
   const title = name.replace('-', ' ');
@@ -23,7 +25,7 @@ const getOptionTemplate = (filter) => {
   `;
 };
 
-export const getOptionsTemplate = (filters) => {
+const getOptionsTemplate = (filters) => {
   const optionsTemplate = filters.map((filter) => {
     return getOptionTemplate(filter);
   }).join('');
@@ -34,3 +36,15 @@ export const getOptionsTemplate = (filters) => {
     </ul>
   `;
 };
+
+export default class OptionsComponent extends AbstractComponent {
+  constructor(filters) {
+    super();
+
+    this._filters = filters;
+  }
+
+  _getTemplate() {
+    return getOptionsTemplate(this._filters);
+  }
+}

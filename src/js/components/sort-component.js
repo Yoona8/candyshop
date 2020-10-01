@@ -1,4 +1,6 @@
-export const getSortTemplate = () => {
+import AbstractComponent from './abstract-component';
+
+const getSortTemplate = () => {
   return `
     <ul class="catalog__filter">
       <li class="input-btn">
@@ -72,3 +74,9 @@ export const getSortTemplate = () => {
     </ul>
   `;
 };
+
+export default class SortComponent extends AbstractComponent {
+  _getTemplate() {
+    return getSortTemplate();
+  }
+}
