@@ -8,14 +8,13 @@ import './filter';
 import './slider';
 import './catalog';
 import './order';
-import {render} from './helpers/common';
-import {RenderPosition} from './helpers/common';
 import FilterComponent from './components/filter-component';
 import OptionsComponent from './components/options-component';
 import SortComponent from './components/sort-component';
 import GoodComponent from './components/good-component';
 import CatalogComponent from './components/catalog-component';
 import LoadMoreComponent from './components/load-more-component';
+import {render, RenderPosition} from './helpers/common';
 import {getGoods} from './mocks/goods-mock';
 import {
   getCategoryFilters,
@@ -68,6 +67,11 @@ const catalogContainerElement = document
 
 render(catalogContainerElement, new CatalogComponent().getElement());
 
+const renderGood = (good) => {
+  const goodComponent = new GoodComponent(good);
+  render(catalogElement, goodComponent.getElement());
+};
+
 if (goods.length > GOODS_COUNT_STEP) {
   let renderedGoodsCount = GOODS_COUNT_STEP;
 
@@ -80,8 +84,7 @@ if (goods.length > GOODS_COUNT_STEP) {
 
     goods.slice(renderedGoodsCount, renderedGoodsCount + GOODS_COUNT_STEP)
       .forEach((good) => {
-        const goodComponent = new GoodComponent(good);
-        render(catalogElement, goodComponent.getElement());
+        renderGood(good);
       });
 
     renderedGoodsCount += GOODS_COUNT_STEP;
@@ -99,6 +102,5 @@ const catalogElement = catalogContainerElement
   .querySelector('.catalog__cards');
 
 goods.slice(0, GOODS_COUNT_STEP).forEach((good) => {
-  const goodComponent = new GoodComponent(good);
-  render(catalogElement, goodComponent.getElement());
+  renderGood(good);
 });
