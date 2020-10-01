@@ -5,7 +5,24 @@ const getLoadMoreTemplate = () => {
 };
 
 export default class LoadMoreComponent extends AbstractComponent {
+  constructor() {
+    super();
+
+    this._onClick = this._onClick.bind(this);
+  }
+
   _getTemplate() {
     return getLoadMoreTemplate();
+  }
+
+  _onClick(evt) {
+    evt.preventDefault();
+    this._callback.click();
+  }
+
+  setOnClick(callback) {
+    this._callback.click = callback;
+
+    this.getElement().addEventListener('click', this._onClick);
   }
 }

@@ -23,7 +23,7 @@ import {
 } from './mocks/filter-mock';
 import NoGoodsComponent from './components/no-goods-component';
 
-const GOODS_COUNT = 0;
+const GOODS_COUNT = 15;
 const GOODS_COUNT_STEP = 6;
 
 const goods = getGoods(GOODS_COUNT);
@@ -83,9 +83,7 @@ if (goods.length > GOODS_COUNT_STEP) {
 
   render(catalogContainerElement, loadMoreComponent.getElement());
 
-  const onLoadMoreClick = (evt) => {
-    evt.preventDefault();
-
+  const onLoadMoreClick = () => {
     goods.slice(renderedGoodsCount, renderedGoodsCount + GOODS_COUNT_STEP)
       .forEach((good) => {
         renderGood(good);
@@ -99,7 +97,7 @@ if (goods.length > GOODS_COUNT_STEP) {
     }
   };
 
-  loadMoreComponent.getElement().addEventListener('click', onLoadMoreClick);
+  loadMoreComponent.setOnClick(onLoadMoreClick);
 }
 
 if (goods.length === 0) {
