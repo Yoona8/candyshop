@@ -24,11 +24,8 @@ import {getGoodCartTemplate} from './components/good-cart-component';
     };
   };
 
-  var emptyFiltersTemplate = document.querySelector('#empty-filters').content.querySelector('.catalog__empty-filter');
-
   var renderEmptyFilters = function () {
-    var emptyElement = emptyFiltersTemplate.cloneNode(true);
-    catalog.appendChild(emptyElement);
+    console.log('no-goods-component.js');
   };
 
   const renderGoods = function () {
