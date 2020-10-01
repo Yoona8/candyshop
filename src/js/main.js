@@ -21,8 +21,9 @@ import {
   getNutritionFilters,
   getOptionFilters
 } from './mocks/filter-mock';
+import NoGoodsComponent from './components/no-goods-component';
 
-const GOODS_COUNT = 14;
+const GOODS_COUNT = 0;
 const GOODS_COUNT_STEP = 6;
 
 const goods = getGoods(GOODS_COUNT);
@@ -67,6 +68,9 @@ const catalogContainerElement = document
 
 render(catalogContainerElement, new CatalogComponent().getElement());
 
+const catalogElement = catalogContainerElement
+  .querySelector('.catalog__cards');
+
 const renderGood = (good) => {
   const goodComponent = new GoodComponent(good);
   render(catalogElement, goodComponent.getElement());
@@ -98,9 +102,10 @@ if (goods.length > GOODS_COUNT_STEP) {
   loadMoreComponent.getElement().addEventListener('click', onLoadMoreClick);
 }
 
-const catalogElement = catalogContainerElement
-  .querySelector('.catalog__cards');
-
-goods.slice(0, GOODS_COUNT_STEP).forEach((good) => {
-  renderGood(good);
-});
+if (goods.length === 0) {
+  render(catalogContainerElement, new NoGoodsComponent().getElement());
+} else {
+  goods.slice(0, GOODS_COUNT_STEP).forEach((good) => {
+    renderGood(good);
+  });
+}
