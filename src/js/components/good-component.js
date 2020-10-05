@@ -90,9 +90,50 @@ export default class GoodComponent extends AbstractComponent {
     super();
 
     this._good = good;
+    this._onAddToFavoritesClick = this._onAddToFavoritesClick.bind(this);
+    this._onAddToCartClick = this._onAddToCartClick.bind(this);
+    this._onContentsClick = this._onContentsClick.bind(this);
+
+    this._setOnContentsClick();
   }
 
   _getTemplate() {
     return getGoodTemplate(this._good);
+  }
+
+  _onAddToFavoritesClick(evt) {
+    evt.preventDefault();
+    this._callback.favoriteClick();
+  }
+
+  _onContentsClick(evt) {
+    evt.preventDefault();
+
+    this.getElement().querySelector('.card__composition').classList
+      .toggle('card__composition--hidden');
+  }
+
+  _onAddToCartClick(evt) {
+    evt.preventDefault();
+    this._callback.cartClick();
+  }
+
+  _setOnContentsClick() {
+    this.getElement().querySelector('.card__btn-composition')
+      .addEventListener('click', this._onContentsClick);
+  }
+
+  setOnAddToCartClick(callback) {
+    this._callback.cartClick = callback;
+
+    this.getElement().querySelector('.card__btn')
+      .addEventListener('click', this._onAddToCartClick);
+  }
+
+  setOnAddToFavoritesClick(callback) {
+    this._callback.favoriteClick = callback;
+
+    this.getElement().querySelector('.card__btn-favorite')
+      .addEventListener('click', this._onAddToFavoritesClick);
   }
 }

@@ -73,6 +73,14 @@ const catalogElement = catalogContainerElement
 
 const renderGood = (good) => {
   const goodComponent = new GoodComponent(good);
+  const onAddToFavoritesClick = () => {
+    console.log(good);
+  };
+  const onAddToCartClick = () => {
+    console.log(good);
+  };
+  goodComponent.setOnAddToFavoritesClick(onAddToFavoritesClick);
+  goodComponent.setOnAddToCartClick(onAddToCartClick);
   render(catalogElement, goodComponent.getElement());
 };
 

@@ -276,30 +276,12 @@ import {getGoodCartTemplate} from './components/good-cart-component';
     }
   };
 
-  var addToFavorite = function (element) {
-    element.classList.toggle('card__btn-favorite--selected');
-    var goodName = element.closest('.card').querySelector('.card__title').textContent;
-    var goodInStore = getGoodFromArray(goods, goodName);
-    goodInStore.favorite = element.classList.contains('card__btn-favorite--selected');
-    window.filter.updateFavoriteQuantity(goodInStore);
-    sortedGoods = window.filter.getFilteredGoods(getFilters(), goods);
-    renderGoods();
-  };
-
-  var onAddToFavoriteClick = function (e) {
-    if (e.target.classList.contains('card__btn-favorite')) {
-      e.preventDefault();
-      addToFavorite(e.target);
-    }
-  };
-
   window.ajax.load('https://js.dump.academy/candyshop/data', onSuccess, window.utility.renderErrorMessage);
   filterForm.addEventListener('change', onFilterChange, true);
   filterForm.addEventListener('mousedown', onPriceControlMousedown, true);
   showAllButton.addEventListener('click', onShowAllButtonClick);
   renderCart();
   // catalog.addEventListener('click', onAddToCartClick);
-  // catalog.addEventListener('click', onAddToFavoriteClick);
   cart.addEventListener('click', onRemoveFromCartClick);
   cart.addEventListener('click', onDecreaseAmountClick);
   cart.addEventListener('click', onIncreaseAmountClick);
