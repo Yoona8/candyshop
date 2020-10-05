@@ -5,8 +5,8 @@ const RenderPosition = {
   AFTER_END: 'afterend'
 };
 
-const render = (container, element, position = RenderPosition.BEFORE_END) => {
-  container.insertAdjacentElement(position, element);
+const render = (container, component, position = RenderPosition.BEFORE_END) => {
+  container.insertAdjacentElement(position, component.getElement());
 };
 
 const createElement = (template) => {

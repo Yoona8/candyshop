@@ -31,17 +31,14 @@ const categoryFilters = getCategoryFilters(goods);
 const nutritionFilters = getNutritionFilters(goods);
 const filterFormElement = document.querySelector('#filter-form');
 
-const nutritionFilterComponent = new FilterComponent(nutritionFilters);
-const categoryFilterComponent = new FilterComponent(categoryFilters);
-
 render(
   filterFormElement,
-  nutritionFilterComponent.getElement(),
+  new FilterComponent(nutritionFilters),
   RenderPosition.AFTER_BEGIN
 );
 render(
   filterFormElement,
-  categoryFilterComponent.getElement(),
+  new FilterComponent(categoryFilters),
   RenderPosition.AFTER_BEGIN
 );
 
@@ -51,7 +48,7 @@ const optionsComponent = new OptionsComponent(optionFilters);
 
 render(
   priceRangeElement,
-  optionsComponent.getElement(),
+  optionsComponent,
   RenderPosition.AFTER_END
 );
 
@@ -59,14 +56,14 @@ const showAllElement = document.querySelector('#filter-form-show-all');
 
 render(
   showAllElement,
-  new SortComponent().getElement(),
+  new SortComponent(),
   RenderPosition.BEFORE_BEGIN
 );
 
 const catalogContainerElement = document
   .querySelector('.catalog__cards-wrap');
 
-render(catalogContainerElement, new CatalogComponent().getElement());
+render(catalogContainerElement, new CatalogComponent());
 
 const catalogElement = catalogContainerElement
   .querySelector('.catalog__cards');
@@ -82,7 +79,7 @@ if (goods.length > GOODS_COUNT_STEP) {
 
   const loadMoreComponent = new LoadMoreComponent();
 
-  render(catalogContainerElement, loadMoreComponent.getElement());
+  render(catalogContainerElement, loadMoreComponent);
 
   const onLoadMoreClick = () => {
     goods.slice(renderedGoodsCount, renderedGoodsCount + GOODS_COUNT_STEP)
@@ -102,7 +99,7 @@ if (goods.length > GOODS_COUNT_STEP) {
 }
 
 if (goods.length === 0) {
-  render(catalogContainerElement, new NoGoodsComponent().getElement());
+  render(catalogContainerElement, new NoGoodsComponent());
 } else {
   goods.slice(0, GOODS_COUNT_STEP).forEach((good) => {
     renderGood(good);

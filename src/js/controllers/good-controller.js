@@ -22,6 +22,6 @@ export default class GoodController {
   init() {
     this._goodComponent.setOnAddToFavoritesClick(this._onAddToFavoritesClick);
     this._goodComponent.setOnAddToCartClick(this._onAddToCartClick);
-    render(this._catalogElement, this._goodComponent.getElement());
+    render(this._catalogElement, this._goodComponent);
   }
 }
