@@ -11,7 +11,6 @@ import './order';
 import FilterComponent from './components/filter-component';
 import OptionsComponent from './components/options-component';
 import SortComponent from './components/sort-component';
-import GoodComponent from './components/good-component';
 import CatalogComponent from './components/catalog-component';
 import LoadMoreComponent from './components/load-more-component';
 import {render, RenderPosition} from './helpers/common';
@@ -22,6 +21,7 @@ import {
   getOptionFilters
 } from './mocks/filter-mock';
 import NoGoodsComponent from './components/no-goods-component';
+import GoodController from './controllers/good-controller';
 
 const GOODS_COUNT = 15;
 const GOODS_COUNT_STEP = 6;
@@ -72,16 +72,9 @@ const catalogElement = catalogContainerElement
   .querySelector('.catalog__cards');
 
 const renderGood = (good) => {
-  const goodComponent = new GoodComponent(good);
-  const onAddToFavoritesClick = () => {
-    console.log(good);
-  };
-  const onAddToCartClick = () => {
-    console.log(good);
-  };
-  goodComponent.setOnAddToFavoritesClick(onAddToFavoritesClick);
-  goodComponent.setOnAddToCartClick(onAddToCartClick);
-  render(catalogElement, goodComponent.getElement());
+  const goodController = new GoodController(catalogElement, good);
+
+  goodController.init();
 };
 
 if (goods.length > GOODS_COUNT_STEP) {
