@@ -2,9 +2,10 @@ import GoodComponent from '../components/good-component';
 import {render} from '../helpers/common';
 
 export default class GoodController {
-  constructor(catalogElement, good) {
+  constructor(catalogElement, good, onDataChanged) {
     this._catalogElement = catalogElement;
     this._good = good;
+    this._onDataChanged = onDataChanged;
     this._goodComponent = new GoodComponent(this._good);
 
     this._onAddToCartClick = this._onAddToCartClick.bind(this);
@@ -12,7 +13,11 @@ export default class GoodController {
   }
 
   _onAddToFavoritesClick() {
-    console.log(this._good);
+    const updatedGood = Object.assign({}, this._good, {
+      isFavorite: !this._good.isFavorite
+    });
+
+    this._onDataChanged(updatedGood);
   };
 
   _onAddToCartClick() {

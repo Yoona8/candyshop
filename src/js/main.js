@@ -22,13 +22,17 @@ import {
 } from './mocks/filter-mock';
 import NoGoodsComponent from './components/no-goods-component';
 import GoodController from './controllers/good-controller';
+import GoodsModel from './models/goods-model';
 
 const GOODS_COUNT = 15;
 const GOODS_COUNT_STEP = 6;
 
-const goods = getGoods(GOODS_COUNT);
-const categoryFilters = getCategoryFilters(goods);
-const nutritionFilters = getNutritionFilters(goods);
+const goodsModel = new GoodsModel();
+
+goodsModel.setGoods(getGoods(GOODS_COUNT));
+
+const categoryFilters = getCategoryFilters(goodsModel.getGoods());
+const nutritionFilters = getNutritionFilters(goodsModel.getGoods());
 const filterFormElement = document.querySelector('#filter-form');
 
 render(
@@ -43,7 +47,7 @@ render(
 );
 
 const priceRangeElement = document.querySelector('#filter-form-price');
-const optionFilters = getOptionFilters(goods);
+const optionFilters = getOptionFilters(goodsModel.getGoods());
 const optionsComponent = new OptionsComponent(optionFilters);
 
 render(
@@ -68,13 +72,22 @@ render(catalogContainerElement, new CatalogComponent());
 const catalogElement = catalogContainerElement
   .querySelector('.catalog__cards');
 
+const onDataChange = (updatedGood) => {
+  goodsModel.updateGood(updatedGood);
+  console.log(goodsModel.getGoods());
+};
+
 const renderGood = (good) => {
-  const goodController = new GoodController(catalogElement, good);
+  const goodController = new GoodController(
+    catalogElement,
+    good,
+    onDataChange
+  );
 
   goodController.init();
 };
 
-if (goods.length > GOODS_COUNT_STEP) {
+if (goodsModel.getGoods().length > GOODS_COUNT_STEP) {
   let renderedGoodsCount = GOODS_COUNT_STEP;
 
   const loadMoreComponent = new LoadMoreComponent();
@@ -82,14 +95,15 @@ if (goods.length > GOODS_COUNT_STEP) {
   render(catalogContainerElement, loadMoreComponent);
 
   const onLoadMoreClick = () => {
-    goods.slice(renderedGoodsCount, renderedGoodsCount + GOODS_COUNT_STEP)
+    goodsModel.getGoods()
+      .slice(renderedGoodsCount, renderedGoodsCount + GOODS_COUNT_STEP)
       .forEach((good) => {
         renderGood(good);
       });
 
     renderedGoodsCount += GOODS_COUNT_STEP;
 
-    if (renderedGoodsCount >= goods.length) {
+    if (renderedGoodsCount >= goodsModel.getGoods().length) {
       loadMoreComponent.getElement().remove();
       loadMoreComponent.removeElement();
     }
@@ -98,10 +112,10 @@ if (goods.length > GOODS_COUNT_STEP) {
   loadMoreComponent.setOnClick(onLoadMoreClick);
 }
 
-if (goods.length === 0) {
+if (goodsModel.getGoods().length === 0) {
   render(catalogContainerElement, new NoGoodsComponent());
 } else {
-  goods.slice(0, GOODS_COUNT_STEP).forEach((good) => {
+  goodsModel.getGoods().slice(0, GOODS_COUNT_STEP).forEach((good) => {
     renderGood(good);
   });
 }
