@@ -43,7 +43,6 @@ import {getGoodCartTemplate} from './components/good-cart-component';
   var filtersByFoodTypes = filterForm.querySelectorAll('input[name="food-type"]');
   var filtersByNutritionFacts = filterForm.querySelectorAll('input[name="food-property"]');
   var filtersByOtherParams = filterForm.querySelectorAll('input[name="mark"]');
-  var sortingFilters = filterForm.querySelectorAll('input[name="sort"]');
 
   var resetFilters = function (filterElements) {
     Array.prototype.forEach.call(filterElements, (function (element) {
@@ -54,7 +53,6 @@ import {getGoodCartTemplate} from './components/good-cart-component';
   var initCatalog = function () {
     // catalog.classList.remove('catalog__cards--load');
     // catalogLoad.classList.add('visually-hidden');
-    window.filter.init(goods);
     resetFilters(filterInputs);
     renderGoods();
     window.slider.init(getMinMaxPrice(sortedGoods));
@@ -74,7 +72,6 @@ import {getGoodCartTemplate} from './components/good-cart-component';
       nutritionFacts: getSetOfFilters(filtersByNutritionFacts),
       prices: window.slider.getPrices(),
       other: getSetOfFilters(filtersByOtherParams),
-      sorting: getSetOfFilters(sortingFilters)
     };
 
     return appliedFilters;

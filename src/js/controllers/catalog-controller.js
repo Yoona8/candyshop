@@ -46,6 +46,8 @@ export default class CatalogController {
   }
 
   _renderCatalog() {
+    render(this._catalogContainerElement, this._catalogComponent);
+
     if (this._goods.length === 0) {
       this._renderNoGoods();
       return;
@@ -76,9 +78,20 @@ export default class CatalogController {
     this._loadMoreComponent.setOnClick(this._onLoadMoreClick);
   }
 
+  _clearCatalog() {
+    this._catalogComponent.getElement().innerHTML = '';
+    this._catalogContainerElement.innerHTML = '';
+    this._renderedGoodsCount = GOODS_COUNT_STEP;
+  }
+
   init() {
     this._goods = this._goodsModel.getGoods();
-    render(this._catalogContainerElement, this._catalogComponent);
+    this._renderCatalog();
+  }
+
+  update(goods) {
+    this._goods = goods;
+    this._clearCatalog();
     this._renderCatalog();
   }
 }

@@ -23,9 +23,17 @@ const Option = {
   IN_STOCK: 'in-stock'
 };
 
+const SortType = {
+  POPULAR: 'popular',
+  PRICE_HIGH: 'price high',
+  PRICE_LOW: 'price low',
+  RATING: 'rating'
+};
+
 export {
   StorageLoad,
   Category,
   NutritionFact,
-  Option
+  Option,
+  SortType
 };

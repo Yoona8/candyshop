@@ -20,6 +20,7 @@ import {
 } from './mocks/filter-mock';
 import GoodsModel from './models/goods-model';
 import CatalogController from './controllers/catalog-controller';
+import {SortType} from './consts';
 
 const GOODS_COUNT = 15;
 
@@ -52,14 +53,6 @@ render(
   RenderPosition.AFTER_END
 );
 
-const showAllElement = document.querySelector('#filter-form-show-all');
-
-render(
-  showAllElement,
-  new SortComponent(),
-  RenderPosition.BEFORE_BEGIN
-);
-
 const catalogContainerElement = document
   .querySelector('.catalog__cards-wrap');
 const catalogController = new CatalogController(
@@ -68,3 +61,37 @@ const catalogController = new CatalogController(
 );
 
 catalogController.init();
+
+const showAllElement = document.querySelector('#filter-form-show-all');
+const sortComponent = new SortComponent();
+
+const sortGoods = (sortType) => {
+  const goods = goodsModel.getGoods().slice();
+
+  switch (sortType) {
+    case SortType.PRICE_HIGH:
+      return goods.sort((a, b) => b.price - a.price);
+    case SortType.PRICE_LOW:
+      return goods.sort((a, b) => a.price - b.price);
+    case SortType.RATING:
+      return goods.sort((a, b) => b.rating.value - a.rating.value);
+    default:
+      return goods;
+  }
+};
+
+const onSortTypeChange = (sortType) => {
+  const goods = sortGoods(sortType);
+
+  catalogController.update(goods);
+};
+
+sortComponent.setOnSortTypeChange(onSortTypeChange);
+
+render(
+  showAllElement,
+  sortComponent,
+  RenderPosition.BEFORE_BEGIN
+);
+
+
