@@ -5,7 +5,11 @@ const RenderPosition = {
   AFTER_END: 'afterend'
 };
 
-const render = (container, component, position = RenderPosition.BEFORE_END) => {
+const render = (
+  container,
+  component,
+  position = RenderPosition.BEFORE_END
+) => {
   container.insertAdjacentElement(position, component.getElement());
 };
 
@@ -16,8 +20,14 @@ const createElement = (template) => {
   return newElement.firstElementChild;
 };
 
+const remove = (component) => {
+  component.getElement().remove();
+  component.removeElement();
+};
+
 export {
   RenderPosition,
   render,
-  createElement
+  createElement,
+  remove
 };
