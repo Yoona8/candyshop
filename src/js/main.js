@@ -25,7 +25,6 @@ import {SortType} from './consts';
 const GOODS_COUNT = 15;
 
 const goodsModel = new GoodsModel();
-
 goodsModel.setGoods(getGoods(GOODS_COUNT));
 
 const categoryFilters = getCategoryFilters(goodsModel.getGoods());

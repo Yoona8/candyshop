@@ -3,6 +3,7 @@ import CatalogComponent from '../components/catalog-component';
 import GoodController from './good-controller';
 import LoadMoreComponent from '../components/load-more-component';
 import NoGoodsComponent from '../components/no-goods-component';
+import {UpdateType, UserAction} from '../consts';
 
 const GOODS_COUNT_STEP = 6;
 
@@ -20,19 +21,37 @@ export default class CatalogController {
     this._loadMoreComponent = new LoadMoreComponent();
 
     this._onDataChange = this._onDataChange.bind(this);
+    this._onViewChange = this._onViewChange.bind(this);
     this._onLoadMoreClick = this._onLoadMoreClick.bind(this);
   }
 
-  _onDataChange(updatedGood) {
-    this._goodsModel.updateGood(updatedGood);
-    this._goodController[updatedGood.id].update(updatedGood);
+  _onDataChange(updateType, update) {
+    console.log(updateType, update);
+    switch (updateType) {
+      case UpdateType.PATCH:
+      case UpdateType.MINOR:
+        this._goodController[update.id].update(update);
+        break;
+      case UpdateType.MAJOR:
+        console.log('Render the whole list of goods');
+        break;
+    }
   };
+
+  _onViewChange(userAction, updateType, update) {
+    switch (userAction) {
+      case UserAction.UPDATE_GOOD:
+      case UserAction.ADD_GOOD_TO_CART:
+        this._goodsModel.updateGood(updateType, update);
+        break;
+    }
+  }
 
   _renderGood(good) {
     const goodController = new GoodController(
       this._catalogComponent.getElement(),
       good,
-      this._onDataChange
+      this._onViewChange
     );
 
     goodController.init();
@@ -91,6 +110,9 @@ export default class CatalogController {
   init() {
     render(this._catalogContainerElement, this._catalogComponent);
     this._goods = this._goodsModel.getGoods();
+
+    this._goodsModel.addObserver(this._onDataChange);
+
     this._renderCatalog();
   }
 

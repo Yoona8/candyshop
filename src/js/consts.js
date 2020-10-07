@@ -30,10 +30,23 @@ const SortType = {
   RATING: 'rating'
 };
 
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR'
+};
+
+const UserAction = {
+  UPDATE_GOOD: 'UPDATE_GOOD',
+  ADD_GOOD_TO_CART: 'ADD_GOOD_TO_CART'
+};
+
 export {
   StorageLoad,
   Category,
   NutritionFact,
   Option,
-  SortType
+  SortType,
+  UpdateType,
+  UserAction
 };
