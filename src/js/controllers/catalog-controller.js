@@ -13,16 +13,19 @@ export default class CatalogController {
 
     this._goods = [];
     this._renderedGoodsCount = GOODS_COUNT_STEP;
+    this._goodController = {};
 
     this._catalogComponent = new CatalogComponent();
     this._noGoodsComponent = new NoGoodsComponent();
     this._loadMoreComponent = new LoadMoreComponent();
 
+    this._onDataChange = this._onDataChange.bind(this);
     this._onLoadMoreClick = this._onLoadMoreClick.bind(this);
   }
 
   _onDataChange(updatedGood) {
     this._goodsModel.updateGood(updatedGood);
+    this._goodController[updatedGood.id].update(updatedGood);
   };
 
   _renderGood(good) {
@@ -33,6 +36,7 @@ export default class CatalogController {
     );
 
     goodController.init();
+    this._goodController[good.id] = goodController;
   };
 
   _renderGoods(from, to) {
@@ -46,8 +50,6 @@ export default class CatalogController {
   }
 
   _renderCatalog() {
-    render(this._catalogContainerElement, this._catalogComponent);
-
     if (this._goods.length === 0) {
       this._renderNoGoods();
       return;
@@ -79,12 +81,15 @@ export default class CatalogController {
   }
 
   _clearCatalog() {
-    this._catalogComponent.getElement().innerHTML = '';
-    this._catalogContainerElement.innerHTML = '';
+    Object.values(this._goodController).forEach((controller) => {
+      controller.destroy();
+    });
+
     this._renderedGoodsCount = GOODS_COUNT_STEP;
   }
 
   init() {
+    render(this._catalogContainerElement, this._catalogComponent);
     this._goods = this._goodsModel.getGoods();
     this._renderCatalog();
   }

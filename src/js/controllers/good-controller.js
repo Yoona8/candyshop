@@ -1,5 +1,5 @@
 import GoodComponent from '../components/good-component';
-import {render} from '../helpers/common';
+import {remove, render, replace} from '../helpers/common';
 
 export default class GoodController {
   constructor(catalogElement, good, onDataChanged) {
@@ -24,9 +24,27 @@ export default class GoodController {
     console.log(this._good);
   };
 
-  init() {
+  _setListeners() {
     this._goodComponent.setOnAddToFavoritesClick(this._onAddToFavoritesClick);
     this._goodComponent.setOnAddToCartClick(this._onAddToCartClick);
+  }
+
+  init() {
+    this._setListeners();
     render(this._catalogElement, this._goodComponent);
+  }
+
+  destroy() {
+    remove(this._goodComponent);
+  }
+
+  update(good) {
+    this._good = good;
+
+    const prevGoodComponent = this._goodComponent;
+
+    this._goodComponent = new GoodComponent(this._good);
+    this._setListeners();
+    replace(this._goodComponent, prevGoodComponent);
   }
 }

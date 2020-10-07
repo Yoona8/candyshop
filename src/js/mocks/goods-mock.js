@@ -60,6 +60,7 @@ const getRandomItemsFromArray = (arr) => {
 
 const getGood = () => {
   return {
+    id: Date.now() + Math.random(),
     name: NAMES[getRandomInt(0, NAMES.length - 1)],
     type: TYPES[getRandomInt(0, TYPES.length - 1)],
     image: IMAGES[getRandomInt(0, IMAGES.length - 1)],
