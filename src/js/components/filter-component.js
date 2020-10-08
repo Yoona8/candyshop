@@ -38,13 +38,18 @@ const getFilterTemplate = (filters) => {
 };
 
 export default class FilterComponent extends AbstractComponent {
-  constructor(filters) {
+  constructor(filters, filtersModel) {
     super();
 
     this._filters = filters;
+    this._filtersModel = filtersModel;
   }
 
   _getTemplate() {
     return getFilterTemplate(this._filters);
+  }
+
+  setOnFilterChange() {
+    console.log('filter changed!');
   }
 }

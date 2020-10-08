@@ -21,10 +21,13 @@ import {
 import GoodsModel from './models/goods-model';
 import CatalogController from './controllers/catalog-controller';
 import {SortType} from './consts';
+import FiltersModel from './models/filters-model';
 
 const GOODS_COUNT = 15;
 
+const filtersModel = new FiltersModel();
 const goodsModel = new GoodsModel();
+
 goodsModel.setGoods(getGoods(GOODS_COUNT));
 
 const categoryFilters = getCategoryFilters(goodsModel.getGoods());
@@ -33,12 +36,12 @@ const filterFormElement = document.querySelector('#filter-form');
 
 render(
   filterFormElement,
-  new FilterComponent(nutritionFilters),
+  new FilterComponent(nutritionFilters, filtersModel),
   RenderPosition.AFTER_BEGIN
 );
 render(
   filterFormElement,
-  new FilterComponent(categoryFilters),
+  new FilterComponent(categoryFilters, filtersModel),
   RenderPosition.AFTER_BEGIN
 );
 
