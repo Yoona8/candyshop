@@ -15,7 +15,6 @@ import {getGoods} from './mocks/goods-mock';
 import {getOptionFilters} from './mocks/filter-mock';
 import GoodsModel from './models/goods-model';
 import CatalogController from './controllers/catalog-controller';
-import {SortType} from './consts';
 import FiltersModel from './models/filters-model';
 import FiltersListController from './controllers/filters-list-controller';
 
@@ -58,25 +57,8 @@ catalogController.init();
 const showAllElement = document.querySelector('#filter-form-show-all');
 const sortComponent = new SortComponent();
 
-const sortGoods = (sortType) => {
-  const goods = goodsModel.getGoods().slice();
-
-  switch (sortType) {
-    case SortType.PRICE_HIGH:
-      return goods.sort((a, b) => b.price - a.price);
-    case SortType.PRICE_LOW:
-      return goods.sort((a, b) => a.price - b.price);
-    case SortType.RATING:
-      return goods.sort((a, b) => b.rating.value - a.rating.value);
-    default:
-      return goods;
-  }
-};
-
 const onSortTypeChange = (sortType) => {
-  const goods = sortGoods(sortType);
-
-  catalogController.update(goods);
+  catalogController.update(sortType);
 };
 
 sortComponent.setOnSortTypeChange(onSortTypeChange);

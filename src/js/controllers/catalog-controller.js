@@ -3,7 +3,7 @@ import CatalogComponent from '../components/catalog-component';
 import GoodController from './good-controller';
 import LoadMoreComponent from '../components/load-more-component';
 import NoGoodsComponent from '../components/no-goods-component';
-import {UpdateType, UserAction} from '../consts';
+import {SortType, UpdateType, UserAction} from '../consts';
 
 const GOODS_COUNT_STEP = 6;
 
@@ -14,6 +14,7 @@ export default class CatalogController {
     this._filtersModel = filtersModel;
 
     this._goods = [];
+    this._sortType = SortType.POPULAR;
     this._renderedGoodsCount = GOODS_COUNT_STEP;
     this._goodController = {};
 
@@ -47,6 +48,19 @@ export default class CatalogController {
     }
   }
 
+  _sortGoods(goods) {
+    switch (this._sortType) {
+      case SortType.PRICE_HIGH:
+        return goods.sort((a, b) => b.price - a.price);
+      case SortType.PRICE_LOW:
+        return goods.sort((a, b) => a.price - b.price);
+      case SortType.RATING:
+        return goods.sort((a, b) => b.rating.value - a.rating.value);
+      default:
+        return goods;
+    }
+  };
+
   _renderGood(good) {
     const goodController = new GoodController(
       this._catalogComponent.getElement(),
@@ -69,6 +83,9 @@ export default class CatalogController {
   }
 
   _renderCatalog() {
+    this._goods = this._goodsModel.getGoods().slice();
+    this._goods = this._sortGoods(this._goods);
+
     if (this._goods.length === 0) {
       this._renderNoGoods();
       return;
@@ -109,7 +126,6 @@ export default class CatalogController {
 
   init() {
     render(this._catalogContainerElement, this._catalogComponent);
-    this._goods = this._goodsModel.getGoods();
 
     this._goodsModel.addObserver(this._onDataChange);
     this._filtersModel.addObserver(this._onDataChange);
@@ -117,8 +133,8 @@ export default class CatalogController {
     this._renderCatalog();
   }
 
-  update(goods) {
-    this._goods = goods;
+  update(sortType) {
+    this._sortType = sortType || this._sortType;
     this._clearCatalog();
     this._renderCatalog();
   }
