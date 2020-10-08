@@ -38,7 +38,9 @@ const UpdateType = {
 
 const UserAction = {
   UPDATE_GOOD: 'UPDATE_GOOD',
-  ADD_GOOD_TO_CART: 'ADD_GOOD_TO_CART'
+  ADD_GOOD_TO_CART: 'ADD_GOOD_TO_CART',
+  ADD_FILTER: 'ADD_FILTER',
+  REMOVE_FILTER: 'REMOVE_FILTER'
 };
 
 export {

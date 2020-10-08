@@ -1,4 +1,5 @@
 import AbstractComponent from './abstract-component';
+import {UserAction} from '../consts';
 
 const getFilterItemTemplate = (filter) => {
   const {name, count} = filter;
@@ -38,18 +39,29 @@ const getFilterTemplate = (filters) => {
 };
 
 export default class FilterComponent extends AbstractComponent {
-  constructor(filters, filtersModel) {
+  constructor(filters) {
     super();
 
     this._filters = filters;
-    this._filtersModel = filtersModel;
+
+    this._onFilterChange = this._onFilterChange.bind(this);
   }
 
   _getTemplate() {
     return getFilterTemplate(this._filters);
   }
 
-  setOnFilterChange() {
-    console.log('filter changed!');
+  _onFilterChange(evt) {
+    const userAction = evt.target.checked
+      ? UserAction.ADD_FILTER
+      : UserAction.REMOVE_FILTER;
+
+    this._callback.filterChange(userAction, evt.target.value);
+  }
+
+  setOnFilterChange(callback) {
+    this._callback.filterChange = callback;
+
+    this.getElement().addEventListener('change', this._onFilterChange);
   }
 }

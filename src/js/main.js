@@ -8,20 +8,16 @@ import './filter';
 import './slider';
 import './catalog';
 import './order';
-import FilterComponent from './components/filter-component';
 import OptionsComponent from './components/options-component';
 import SortComponent from './components/sort-component';
 import {render, RenderPosition} from './helpers/common';
 import {getGoods} from './mocks/goods-mock';
-import {
-  getCategoryFilters,
-  getNutritionFilters,
-  getOptionFilters
-} from './mocks/filter-mock';
+import {getOptionFilters} from './mocks/filter-mock';
 import GoodsModel from './models/goods-model';
 import CatalogController from './controllers/catalog-controller';
 import {SortType} from './consts';
 import FiltersModel from './models/filters-model';
+import FiltersListController from './controllers/filters-list-controller';
 
 const GOODS_COUNT = 15;
 
@@ -30,20 +26,14 @@ const goodsModel = new GoodsModel();
 
 goodsModel.setGoods(getGoods(GOODS_COUNT));
 
-const categoryFilters = getCategoryFilters(goodsModel.getGoods());
-const nutritionFilters = getNutritionFilters(goodsModel.getGoods());
 const filterFormElement = document.querySelector('#filter-form');
+const filtersListController = new FiltersListController(
+  filterFormElement,
+  goodsModel,
+  filtersModel
+);
 
-render(
-  filterFormElement,
-  new FilterComponent(nutritionFilters, filtersModel),
-  RenderPosition.AFTER_BEGIN
-);
-render(
-  filterFormElement,
-  new FilterComponent(categoryFilters, filtersModel),
-  RenderPosition.AFTER_BEGIN
-);
+filtersListController.init();
 
 const priceRangeElement = document.querySelector('#filter-form-price');
 const optionFilters = getOptionFilters(goodsModel.getGoods());
@@ -59,7 +49,8 @@ const catalogContainerElement = document
   .querySelector('.catalog__cards-wrap');
 const catalogController = new CatalogController(
   catalogContainerElement,
-  goodsModel
+  goodsModel,
+  filtersModel
 );
 
 catalogController.init();

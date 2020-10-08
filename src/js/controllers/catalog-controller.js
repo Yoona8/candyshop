@@ -8,9 +8,10 @@ import {UpdateType, UserAction} from '../consts';
 const GOODS_COUNT_STEP = 6;
 
 export default class CatalogController {
-  constructor(catalogContainerElement, goodsModel) {
+  constructor(catalogContainerElement, goodsModel, filtersModel) {
     this._catalogContainerElement = catalogContainerElement;
     this._goodsModel = goodsModel;
+    this._filtersModel = filtersModel;
 
     this._goods = [];
     this._renderedGoodsCount = GOODS_COUNT_STEP;
@@ -26,7 +27,6 @@ export default class CatalogController {
   }
 
   _onDataChange(updateType, update) {
-    console.log(updateType, update);
     switch (updateType) {
       case UpdateType.PATCH:
       case UpdateType.MINOR:
@@ -112,6 +112,7 @@ export default class CatalogController {
     this._goods = this._goodsModel.getGoods();
 
     this._goodsModel.addObserver(this._onDataChange);
+    this._filtersModel.addObserver(this._onDataChange);
 
     this._renderCatalog();
   }
