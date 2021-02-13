@@ -1,13 +1,3 @@
-import './utility';
-import './ajax';
-import './modal';
-import './goods';
-import './payment';
-import './delivery';
-import './filter';
-import './slider';
-import './catalog';
-import './order';
 import FilterComponent from './components/filter-component';
 import OptionsComponent from './components/options-component';
 import SortComponent from './components/sort-component';

@@ -23,9 +23,32 @@ const Option = {
   IN_STOCK: 'in-stock'
 };
 
+const SortType = {
+  POPULAR: 'popular',
+  PRICE_HIGH: 'price high',
+  PRICE_LOW: 'price low',
+  RATING: 'rating'
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR'
+};
+
+const UserAction = {
+  UPDATE_GOOD: 'UPDATE_GOOD',
+  ADD_GOOD_TO_CART: 'ADD_GOOD_TO_CART',
+  ADD_FILTER: 'ADD_FILTER',
+  REMOVE_FILTER: 'REMOVE_FILTER'
+};
+
 export {
   StorageLoad,
   Category,
   NutritionFact,
-  Option
+  Option,
+  SortType,
+  UpdateType,
+  UserAction
 };
