@@ -11,7 +11,7 @@
     "url": "https://github.com/htmlacademy-javascript/232403-candyshop/issues"
   },
   "devDependencies": {
-    "browser-sync": "2.26.12",
+    "browser-sync": "2.29.3",
     "eslint": "7.9.0",
     "html-minifier": "4.0.0",
     "postcss-cli": "8.0.0",
